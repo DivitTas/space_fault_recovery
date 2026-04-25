@@ -22,11 +22,12 @@ from pydantic import Field
 # ── Valid commands and targets ──────────────────────────────────────────
 
 VALID_COMMANDS: set[str] = {
-    # Power (10)
+    # Power
     "shed_load",
     "restore_load",
     "switch_to_backup_battery",
     "reset_power_controller",
+    "reconfigure_power",
     # Attitude (4)
     "stabilize_attitude",
     "switch_to_thruster_control",
@@ -49,9 +50,10 @@ VALID_COMMANDS: set[str] = {
 TARGETED_COMMANDS: dict[str, set[str]] = {
     "shed_load": {"science_a", "science_b", "heaters", "transponder"},
     "restore_load": {"science_a", "science_b", "heaters", "transponder"},
+    "reconfigure_power": {"solar_a", "solar_b"},
     "switch_attitude_reference": {"star_tracker", "gyro", "sun_sensor"},
     "query_power_level": {"battery", "solar_a", "solar_b"},
-    "diagnostic_scan": {"power", "attitude"},
+    "diagnostic_scan": {"power", "attitude", "comms"},
 }
 
 DIAGNOSTIC_COMMANDS: set[str] = {
