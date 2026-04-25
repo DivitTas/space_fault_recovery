@@ -115,6 +115,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
         for fault in faults:
             self._inject_fault(fault)
 
+        if self._sc.active_faults:
+            self._sc.mission_status = "degraded"
         self._sc.last_action_result = (
             f"episode initialized with {n_faults} fault(s); telemetry shows anomalies"
         )
@@ -148,6 +150,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
 
     def step(self, action: SpaceFaultAction) -> SpaceFaultObservation:  # type: ignore[override]
         sc = self._sc
+        if sc.mission_status in ("recovered", "lost") or sc.step >= MAX_STEPS:
+            return self._build_observation(done=True, reward=0.0)
         self._state.step_count += 1
         sc.step += 1
         reward = 0.0
@@ -197,6 +201,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
             else:
                 setattr(sc, attr, False)
                 sc.last_action_result = f"{target} powered off"
+                if target == "transponder":
+                    sc.transponder_pending_powercycle = True
                 if sc.battery_pct < 60.0 or sc.power_controller_fault:
                     reward += 0.3
                 else:
@@ -204,18 +210,13 @@ class SpaceFaultRecoveryEnvironment(Environment):
 
         elif command == "restore_load":
             attr = f"{target}_online"
-            # Power-cycling transponder clears comms fault even when already online
-            if target == "transponder" and sc.comms_fault:
-                sc.transponder_online = True
-                sc.comms_fault = False
-                if "comms_degraded" in sc.active_faults:
-                    sc.active_faults.remove("comms_degraded")
-                    sc.cleared_faults.append("comms_degraded")
-                sc.last_action_result = "transponder power-cycled; comms fault cleared"
-                reward += 0.8
-            elif getattr(sc, attr):
-                sc.last_action_result = f"{target} already online"
-                reward -= 0.2
+            if getattr(sc, attr):
+                if target == "transponder" and sc.comms_fault:
+                    sc.last_action_result = "comms fault active — power cycle required: shed_load then restore_load"
+                    reward -= 0.1
+                else:
+                    sc.last_action_result = f"{target} already online"
+                    reward -= 0.2
             elif sc.battery_pct < 25.0:
                 sc.last_action_result = (
                     f"refused: battery {sc.battery_pct:.1f}% too low to restore {target}"
@@ -225,13 +226,20 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 setattr(sc, attr, True)
                 sc.last_action_result = f"{target} restored"
                 reward += 0.1
-                # Power-cycling heaters resets the heater circuit fault
-                if target == "heaters" and sc.thermal_fault and sc.battery_temp_c > 5.0:
+                if target == "heaters" and sc.thermal_fault and sc.battery_temp_c > -2.0:
                     sc.thermal_fault = False
                     if "thermal_fault" in sc.active_faults:
                         sc.active_faults.remove("thermal_fault")
                         sc.cleared_faults.append("thermal_fault")
                     sc.last_action_result = "heaters restored; thermal fault cleared"
+                    reward += 0.8
+                elif target == "transponder" and sc.comms_fault and sc.transponder_pending_powercycle:
+                    sc.comms_fault = False
+                    sc.transponder_pending_powercycle = False
+                    if "comms_degraded" in sc.active_faults:
+                        sc.active_faults.remove("comms_degraded")
+                        sc.cleared_faults.append("comms_degraded")
+                    sc.last_action_result = "transponder power-cycled; comms fault cleared"
                     reward += 0.8
 
         elif command == "switch_to_backup_battery":
@@ -246,29 +254,15 @@ class SpaceFaultRecoveryEnvironment(Environment):
                     reward += 0.5
 
         elif command == "reset_power_controller":
-            cleared = []
             if sc.power_controller_fault:
                 sc.power_controller_fault = False
                 if "battery_drain" in sc.active_faults:
                     sc.active_faults.remove("battery_drain")
                     sc.cleared_faults.append("battery_drain")
-                    cleared.append("battery_drain")
+                sc.last_action_result = "power controller reset; drain fault cleared"
                 reward += 0.8
-            # Solar MPPT re-acquisition: clears solar tracking faults and partially restores output
-            for solar_fault, panel in (("solar_a_degraded", "solar_a"), ("solar_b_degraded", "solar_b")):
-                if solar_fault in sc.active_faults:
-                    if panel == "solar_a":
-                        sc.solar_a_health = min(1.0, sc.solar_a_health + 0.45)
-                    else:
-                        sc.solar_b_health = min(1.0, sc.solar_b_health + 0.45)
-                    sc.active_faults.remove(solar_fault)
-                    sc.cleared_faults.append(solar_fault)
-                    cleared.append(solar_fault)
-                    reward += 0.8
-            if cleared:
-                sc.last_action_result = f"power controller reset; cleared: {cleared}"
-            elif not sc.power_controller_fault:
-                sc.last_action_result = "power controller reset (no faults present)"
+            else:
+                sc.last_action_result = "power controller nominal; reset had no effect"
                 reward -= 0.2
 
         elif command == "stabilize_attitude":
@@ -419,9 +413,15 @@ class SpaceFaultRecoveryEnvironment(Environment):
             reward += 0.5 if sc.mission_status == "critical" else -0.2
 
         elif command == "resume_nominal":
-            unresolved = list(sc.active_faults)
-            if unresolved:
-                sc.last_action_result = f"refused: unresolved faults {unresolved}"
+            hw_fault = (
+                sc.power_controller_fault
+                or sc.attitude_fault
+                or sc.thermal_fault
+                or sc.comms_fault
+                or sc.rw_status == "failed"
+            )
+            if hw_fault:
+                sc.last_action_result = "refused: subsystems not ready for nominal operations"
                 reward -= 0.5
             elif sc.attitude_error > 2.0 or sc.battery_pct < 40.0:
                 sc.last_action_result = (
@@ -510,9 +510,15 @@ class SpaceFaultRecoveryEnvironment(Environment):
 
         # Track consecutive steps where all faults cleared and state is healthy
         stable = (
-            len(sc.active_faults) == 0
+            not sc.power_controller_fault
+            and not sc.attitude_fault
+            and not sc.thermal_fault
+            and not sc.comms_fault
+            and sc.rw_status != "failed"
             and sc.battery_pct >= 40.0
             and sc.attitude_error < 3.0
+            and not sc.safe_mode
+            and sc.transponder_online
         )
         sc.consecutive_stable_steps = sc.consecutive_stable_steps + 1 if stable else 0
 
@@ -671,9 +677,9 @@ if __name__ == "__main__":
         ("desaturate_wheels", None),
         ("recalibrate_imu", None),
         ("restore_load", "heaters"),
-        ("restore_load", "transponder"),
+        ("shed_load", "transponder"),     # power-cycle comms: shed first
+        ("restore_load", "transponder"),  # then restore to clear comms_degraded
         ("stabilize_attitude", None),
-        ("safe_mode", None),
         ("stabilize_attitude", None),
         ("stabilize_attitude", None),
         ("resume_nominal", None),
