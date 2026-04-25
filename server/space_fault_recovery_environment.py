@@ -76,6 +76,7 @@ class SpacecraftState:
     science_b_online: bool = True
     heaters_online: bool = True
     transponder_online: bool = True
+    transponder_pending_powercycle: bool = False
     safe_mode: bool = False
     # Episode tracking
     active_faults: list = field(default_factory=list)
