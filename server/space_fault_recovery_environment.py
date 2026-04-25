@@ -131,7 +131,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
             sc.solar_b_health = self._rng.uniform(0.05, 0.35)
         elif fault == "battery_drain":
             sc.battery_health = self._rng.uniform(0.4, 0.7)
-            sc.battery_pct = self._rng.uniform(55.0, 75.0)
+            max_capacity = 100.0 * sc.battery_health
+            sc.battery_pct = min(max_capacity, self._rng.uniform(55.0, 75.0))
             sc.power_controller_fault = True
         elif fault == "rw_fault":
             sc.rw_degradation = self._rng.uniform(0.40, 0.70)
@@ -201,7 +202,10 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 reward -= 0.2
             else:
                 setattr(sc, attr, False)
-                sc.last_action_result = f"{target} powered off"
+                if target == "heaters" and sc.battery_temp_c < 5.0:
+                    sc.last_action_result = f"WARNING: heaters powered off while battery_temp_c is very low ({sc.battery_temp_c:.1f}C)"
+                else:
+                    sc.last_action_result = f"{target} powered off"
                 if target == "transponder":
                     sc.transponder_pending_powercycle = True
                 if sc.battery_pct < 60.0 or sc.power_controller_fault:
@@ -326,13 +330,17 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 reward -= 0.3
             else:
                 sc.fuel_units -= STABILIZE_FUEL_COST
+                old_error = sc.attitude_error
                 sc.attitude_error = max(0.0, sc.attitude_error - 2.5)
                 if sc.attitude_mode == "tumbling" and sc.attitude_error < 3.0:
                     sc.attitude_mode = "thruster"
                 sc.last_action_result = (
                     f"attitude stabilization burn; pointing error {sc.attitude_error:.2f}deg"
                 )
-                reward += 0.3
+                if old_error > 0.5:
+                    reward += 0.3
+                else:
+                    reward -= 0.1
 
         elif command == "switch_to_thruster_control":
             if sc.attitude_mode == "thruster":
@@ -355,7 +363,7 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 # Symptom fix: always desaturate at full effectiveness
                 sc.fuel_units -= DESAT_FUEL_COST
                 sc.rw_degradation = max(0.0, sc.rw_degradation - 0.50)
-                if sc.rw_degradation < 0.4 and sc.rw_status != "failed":
+                if sc.rw_degradation < 0.4:
                     sc.rw_status = "nominal"
                     if "rw_fault" in sc.diagnosed_faults and "rw_fault" in sc.active_faults:
                         sc.active_faults.remove("rw_fault")
@@ -517,7 +525,13 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 sc.attitude_mode = "thruster"
             sc.attitude_error = max(0.0, sc.attitude_error - 1.0)
             sc.last_action_result = "safe mode engaged; non-essentials shed"
-            reward += 0.5 if sc.mission_status == "critical" else -0.2
+            is_critical = (
+                sc.battery_pct < 20.0
+                or sc.attitude_error >= 15.0
+                or sc.attitude_mode == "tumbling"
+                or sc.battery_temp_c < 0.0
+            )
+            reward += 0.5 if is_critical else -0.2
 
         elif command == "resume_nominal":
             # ── Gate 1: all injected faults must be resolved ──
@@ -645,7 +659,6 @@ class SpaceFaultRecoveryEnvironment(Environment):
             and sc.rw_status == "nominal"
             and sc.battery_pct >= 40.0
             and sc.attitude_error < 3.0
-            and not sc.safe_mode
             and sc.transponder_online
         )
         sc.consecutive_stable_steps = sc.consecutive_stable_steps + 1 if stable else 0
@@ -722,11 +735,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
         sc = self._sc
         done = sc.mission_status in ("recovered", "lost") or sc.step >= MAX_STEPS
         if sc.step >= MAX_STEPS and sc.mission_status not in ("recovered", "lost"):
-            if sc.mission_status == "critical":
-                sc.mission_status = "lost"
-                reward -= 5.0
-            else:
-                reward -= 1.0
+            sc.mission_status = "lost"
+            reward -= 10.0
         return self._build_observation(done=done, reward=reward)
 
     def _build_observation(self, done: bool = False, reward: float = 0.0) -> SpaceFaultObservation:
