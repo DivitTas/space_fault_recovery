@@ -7,10 +7,10 @@
 """Space Fault Recovery Environment."""
 
 from .client import SpaceFaultRecoveryEnv
-from .models import SpaceFaultRecoveryAction, SpaceFaultRecoveryObservation
+from .models import SpaceFaultAction, SpaceFaultObservation
 
 __all__ = [
-    "SpaceFaultRecoveryAction",
-    "SpaceFaultRecoveryObservation",
+    "SpaceFaultAction",
+    "SpaceFaultObservation",
     "SpaceFaultRecoveryEnv",
 ]

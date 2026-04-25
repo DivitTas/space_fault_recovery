@@ -36,18 +36,18 @@ except Exception as e:  # pragma: no cover
     ) from e
 
 try:
-    from ..models import SpaceFaultRecoveryAction, SpaceFaultRecoveryObservation
+    from ..models import SpaceFaultAction, SpaceFaultObservation
     from .space_fault_recovery_environment import SpaceFaultRecoveryEnvironment
-except ModuleNotFoundError:
-    from models import SpaceFaultRecoveryAction, SpaceFaultRecoveryObservation
+except ImportError:
+    from models import SpaceFaultAction, SpaceFaultObservation
     from server.space_fault_recovery_environment import SpaceFaultRecoveryEnvironment
 
 
 # Create the app with web interface and README integration
 app = create_app(
     SpaceFaultRecoveryEnvironment,
-    SpaceFaultRecoveryAction,
-    SpaceFaultRecoveryObservation,
+    SpaceFaultAction,
+    SpaceFaultObservation,
     env_name="space_fault_recovery",
     max_concurrent_envs=1,  # increase this number to allow more concurrent WebSocket sessions
 )
