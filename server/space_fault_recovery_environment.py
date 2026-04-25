@@ -81,6 +81,7 @@ class SpacecraftState:
     # Episode tracking
     active_faults: list = field(default_factory=list)
     cleared_faults: list = field(default_factory=list)
+    diagnosed_faults: set = field(default_factory=set)  # faults the agent has diagnosed
     step: int = 0
     mission_status: str = "nominal"
     last_action_result: str = "ok"
@@ -133,7 +134,7 @@ class SpaceFaultRecoveryEnvironment(Environment):
             sc.battery_pct = self._rng.uniform(55.0, 75.0)
             sc.power_controller_fault = True
         elif fault == "rw_fault":
-            sc.rw_degradation = self._rng.uniform(0.55, 0.85)
+            sc.rw_degradation = self._rng.uniform(0.40, 0.70)
             sc.rw_status = "degraded"
             # Vibration from degraded wheels introduces IMU noise
             sc.gyro_bias = sc.rw_degradation * 2.0
@@ -227,20 +228,28 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 sc.last_action_result = f"{target} restored"
                 reward += 0.1
                 if target == "heaters" and sc.thermal_fault and sc.battery_temp_c > -2.0:
+                    # Symptom fix: always clear the thermal_fault flag
                     sc.thermal_fault = False
-                    if "thermal_fault" in sc.active_faults:
+                    if "thermal_fault" in sc.diagnosed_faults and "thermal_fault" in sc.active_faults:
                         sc.active_faults.remove("thermal_fault")
                         sc.cleared_faults.append("thermal_fault")
-                    sc.last_action_result = "heaters restored; thermal fault cleared"
-                    reward += 0.8
+                        sc.last_action_result = "heaters restored; thermal fault cleared"
+                        reward += 0.8
+                    else:
+                        sc.last_action_result = "heaters restored; temperature stabilizing"
+                        reward += 0.2
                 elif target == "transponder" and sc.comms_fault and sc.transponder_pending_powercycle:
+                    # Symptom fix: always clear the comms_fault flag
                     sc.comms_fault = False
                     sc.transponder_pending_powercycle = False
-                    if "comms_degraded" in sc.active_faults:
+                    if "comms_degraded" in sc.diagnosed_faults and "comms_degraded" in sc.active_faults:
                         sc.active_faults.remove("comms_degraded")
                         sc.cleared_faults.append("comms_degraded")
-                    sc.last_action_result = "transponder power-cycled; comms fault cleared"
-                    reward += 0.8
+                        sc.last_action_result = "transponder power-cycled; comms fault cleared"
+                        reward += 0.8
+                    else:
+                        sc.last_action_result = "transponder power-cycled; link partially restored"
+                        reward += 0.2
 
         elif command == "switch_to_backup_battery":
             if sc.on_backup_battery:
@@ -254,16 +263,62 @@ class SpaceFaultRecoveryEnvironment(Environment):
                     reward += 0.5
 
         elif command == "reset_power_controller":
-            if sc.power_controller_fault:
-                sc.power_controller_fault = False
-                if "battery_drain" in sc.active_faults:
-                    sc.active_faults.remove("battery_drain")
-                    sc.cleared_faults.append("battery_drain")
-                sc.last_action_result = "power controller reset; drain fault cleared"
-                reward += 0.8
-            else:
+            if not sc.power_controller_fault:
                 sc.last_action_result = "power controller nominal; reset had no effect"
                 reward -= 0.2
+            else:
+                # Symptom fix: always clear the fault flag
+                sc.power_controller_fault = False
+                if "battery_drain" in sc.diagnosed_faults and "battery_drain" in sc.active_faults:
+                    sc.active_faults.remove("battery_drain")
+                    sc.cleared_faults.append("battery_drain")
+                    sc.last_action_result = "power controller reset; drain fault cleared"
+                    reward += 0.8
+                else:
+                    sc.last_action_result = "power controller reset; bus stabilized"
+                    reward += 0.2
+
+        elif command == "reconfigure_power":
+            # Solar fault recovery: multi-step path.
+            # The agent must first diagnose the panel (query_power_level(solar_X))
+            # to know it's degraded, then reconfigure.
+            panel = target  # "solar_a" or "solar_b"
+            fault_name = f"{panel}_degraded"
+            health_attr = f"{panel}_health"
+            current_health = getattr(sc, health_attr)
+
+            if fault_name not in sc.active_faults:
+                sc.last_action_result = f"{panel} has no active fault to reconfigure"
+                reward -= 0.3
+            elif fault_name not in sc.diagnosed_faults:
+                # Blind reconfigure without diagnosis: partial effect + penalty
+                # The agent guessed instead of diagnosing first
+                new_health = min(1.0, current_health + 0.10)
+                setattr(sc, health_attr, new_health)
+                sc.last_action_result = (
+                    f"{panel} reconfigured blindly; marginal improvement "
+                    f"(health {current_health:.2f} -> {new_health:.2f})"
+                )
+                reward -= 0.1  # net negative to discourage blind attempts
+            else:
+                # Diagnosed reconfigure: significant restoration
+                new_health = min(1.0, current_health + 0.40)
+                setattr(sc, health_attr, new_health)
+                if new_health >= 0.50:
+                    sc.active_faults.remove(fault_name)
+                    sc.cleared_faults.append(fault_name)
+                    sc.last_action_result = (
+                        f"{panel} reconfigured successfully; fault cleared "
+                        f"(health {current_health:.2f} -> {new_health:.2f})"
+                    )
+                    reward += 1.0
+                else:
+                    sc.last_action_result = (
+                        f"{panel} partially reconfigured "
+                        f"(health {current_health:.2f} -> {new_health:.2f}); "
+                        f"repeat reconfigure may be needed"
+                    )
+                    reward += 0.3
 
         elif command == "stabilize_attitude":
             if sc.fuel_units < STABILIZE_FUEL_COST:
@@ -293,32 +348,50 @@ class SpaceFaultRecoveryEnvironment(Environment):
             if sc.fuel_units < DESAT_FUEL_COST:
                 sc.last_action_result = "insufficient fuel to desaturate"
                 reward -= 0.3
+            elif sc.rw_degradation < 0.1:
+                sc.last_action_result = "wheels already nominal; desaturation unnecessary"
+                reward -= 0.1
             else:
+                # Symptom fix: always desaturate at full effectiveness
                 sc.fuel_units -= DESAT_FUEL_COST
-                sc.rw_degradation = max(0.0, sc.rw_degradation - 0.5)
+                sc.rw_degradation = max(0.0, sc.rw_degradation - 0.50)
                 if sc.rw_degradation < 0.4 and sc.rw_status != "failed":
                     sc.rw_status = "nominal"
-                    if "rw_fault" in sc.active_faults:
+                    if "rw_fault" in sc.diagnosed_faults and "rw_fault" in sc.active_faults:
                         sc.active_faults.remove("rw_fault")
                         sc.cleared_faults.append("rw_fault")
-                sc.last_action_result = (
-                    f"wheels desaturated; degradation now {sc.rw_degradation:.2f}"
-                )
-                reward += 0.5 if "rw_fault" in sc.cleared_faults else 0.2
+                        sc.last_action_result = (
+                            f"wheels desaturated; rw_fault cleared (degradation {sc.rw_degradation:.2f})"
+                        )
+                        reward += 0.5
+                    else:
+                        sc.last_action_result = (
+                            f"wheels desaturated; degradation now {sc.rw_degradation:.2f}"
+                        )
+                        reward += 0.2
+                else:
+                    sc.last_action_result = (
+                        f"wheels desaturated; degradation now {sc.rw_degradation:.2f}"
+                    )
+                    reward += 0.2
 
         elif command == "recalibrate_star_tracker":
-            if sc.attitude_fault:
+            if not sc.attitude_fault:
+                sc.last_action_result = "star tracker nominal; recalibration unnecessary"
+                reward -= 0.2
+            else:
+                # Symptom fix: always clear bias and reduce error
                 sc.attitude_fault = False
                 sc.star_tracker_bias = 0.0
                 sc.attitude_error = max(0.0, sc.attitude_error - 1.0)
-                if "attitude_drift" in sc.active_faults:
+                if "attitude_drift" in sc.diagnosed_faults and "attitude_drift" in sc.active_faults:
                     sc.active_faults.remove("attitude_drift")
                     sc.cleared_faults.append("attitude_drift")
-                sc.last_action_result = "star tracker recalibrated; drift cleared"
-                reward += 1.0
-            else:
-                sc.last_action_result = "star tracker nominal; recalibration unnecessary"
-                reward -= 0.2
+                    sc.last_action_result = "star tracker recalibrated; drift fault cleared"
+                    reward += 1.0
+                else:
+                    sc.last_action_result = "star tracker recalibrated; bias removed"
+                    reward += 0.3
 
         elif command == "cross_validate_attitude":
             st_reading = sc.attitude_error + sc.star_tracker_bias
@@ -328,6 +401,10 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 f"diag: ST={st_reading:.2f}deg GY={gy_reading:.2f}deg "
                 f"SUN={sun_reading:.2f}deg disagree={abs(st_reading - sun_reading):.2f}"
             )
+            if sc.attitude_fault:
+                sc.diagnosed_faults.add("attitude_drift")
+            if sc.comms_fault:
+                sc.diagnosed_faults.add("comms_degraded")
             reward += 0.1 if sc.attitude_fault else 0.0
 
         elif command == "switch_attitude_reference":
@@ -353,18 +430,27 @@ class SpaceFaultRecoveryEnvironment(Environment):
             if target == "battery":
                 sc.last_action_result = (
                     f"diag: battery_pct={sc.battery_pct:.1f}% "
-                    f"health={sc.battery_health:.2f} backup={sc.on_backup_battery}"
+                    f"health={sc.battery_health:.2f} backup={sc.on_backup_battery} "
+                    f"pcf={sc.power_controller_fault}"
                 )
+                if sc.power_controller_fault:
+                    sc.diagnosed_faults.add("battery_drain")
             elif target == "solar_a":
                 sc.last_action_result = (
                     f"diag: solar_a output={self._solar_output('a'):.1f}W "
-                    f"(panel tracking {'degraded' if sc.solar_a_health < 0.5 else 'nominal'})"
+                    f"health={sc.solar_a_health:.2f} "
+                    f"(panel {'DEGRADED' if sc.solar_a_health < 0.5 else 'nominal'})"
                 )
+                if sc.solar_a_health < 0.5:
+                    sc.diagnosed_faults.add("solar_a_degraded")
             else:
                 sc.last_action_result = (
                     f"diag: solar_b output={self._solar_output('b'):.1f}W "
-                    f"(panel tracking {'degraded' if sc.solar_b_health < 0.5 else 'nominal'})"
+                    f"health={sc.solar_b_health:.2f} "
+                    f"(panel {'DEGRADED' if sc.solar_b_health < 0.5 else 'nominal'})"
                 )
+                if sc.solar_b_health < 0.5:
+                    sc.diagnosed_faults.add("solar_b_degraded")
             reward += 0.05
 
         elif command == "query_attitude":
@@ -373,6 +459,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 f"rw={sc.rw_status} ref={sc.attitude_reference} "
                 f"st_bias={sc.star_tracker_bias:.1f} gyro_bias={sc.gyro_bias:.1f}"
             )
+            if sc.rw_degradation >= 0.4:
+                sc.diagnosed_faults.add("rw_fault")
             reward += 0.05
 
         elif command == "query_thermal":
@@ -381,6 +469,8 @@ class SpaceFaultRecoveryEnvironment(Environment):
                 f"heaters={'online' if sc.heaters_online else 'offline'} "
                 f"thermal_fault={sc.thermal_fault}"
             )
+            if sc.thermal_fault:
+                sc.diagnosed_faults.add("thermal_fault")
             reward += 0.05
 
         elif command == "diagnostic_scan":
@@ -393,12 +483,29 @@ class SpaceFaultRecoveryEnvironment(Environment):
                     f"net={'positive' if solar_w >= load_w else 'negative'} "
                     f"pcf={sc.power_controller_fault}"
                 )
-            else:
+                if sc.power_controller_fault:
+                    sc.diagnosed_faults.add("battery_drain")
+            elif target == "attitude":
                 sc.last_action_result = (
                     f"diag-scan attitude: mode={sc.attitude_mode} "
                     f"err={sc.attitude_error:.2f}deg rw_deg={sc.rw_degradation:.2f} "
                     f"st_fault={sc.attitude_fault} ref={sc.attitude_reference}"
                 )
+                if sc.attitude_fault:
+                    sc.diagnosed_faults.add("attitude_drift")
+                if sc.rw_degradation >= 0.4:
+                    sc.diagnosed_faults.add("rw_fault")
+            else:  # target == "comms"
+                signal_db = 25.0 if sc.transponder_online else 0.0
+                if sc.comms_fault and sc.transponder_online:
+                    signal_db = 8.0
+                sc.last_action_result = (
+                    f"diag-scan comms: transponder={'online' if sc.transponder_online else 'offline'} "
+                    f"signal={signal_db:.1f}dB comms_fault={sc.comms_fault} "
+                    f"pending_cycle={sc.transponder_pending_powercycle}"
+                )
+                if sc.comms_fault:
+                    sc.diagnosed_faults.add("comms_degraded")
             reward += 0.1
 
         elif command == "safe_mode":
@@ -413,22 +520,41 @@ class SpaceFaultRecoveryEnvironment(Environment):
             reward += 0.5 if sc.mission_status == "critical" else -0.2
 
         elif command == "resume_nominal":
-            hw_fault = (
+            # ── Gate 1: all injected faults must be resolved ──
+            if sc.active_faults:
+                sc.last_action_result = (
+                    f"refused: {len(sc.active_faults)} unresolved fault(s) — "
+                    f"resolve before resuming nominal"
+                )
+                reward -= 0.5
+            # ── Gate 2: hardware boolean flags clean ──
+            elif (
                 sc.power_controller_fault
                 or sc.attitude_fault
                 or sc.thermal_fault
                 or sc.comms_fault
                 or sc.rw_status == "failed"
-            )
-            if hw_fault:
-                sc.last_action_result = "refused: subsystems not ready for nominal operations"
+            ):
+                sc.last_action_result = "refused: subsystem hardware faults still active"
                 reward -= 0.5
+            # ── Gate 3: rw must be nominal (not just "not failed") ──
+            elif sc.rw_status != "nominal":
+                sc.last_action_result = (
+                    f"refused: reaction wheels {sc.rw_status} — desaturate first"
+                )
+                reward -= 0.3
+            # ── Gate 4: state margins ──
             elif sc.attitude_error > 2.0 or sc.battery_pct < 40.0:
                 sc.last_action_result = (
                     f"refused: state not stable (err={sc.attitude_error:.1f}, "
                     f"bat={sc.battery_pct:.1f}%)"
                 )
                 reward -= 0.3
+            # ── Gate 5: comms must be live ──
+            elif not sc.transponder_online:
+                sc.last_action_result = "refused: transponder offline — restore comms first"
+                reward -= 0.3
+            # ── Gate 6: stability duration ──
             elif sc.consecutive_stable_steps < STABLE_STEPS_REQUIRED:
                 sc.last_action_result = (
                     f"refused: need {STABLE_STEPS_REQUIRED} consecutive stable steps "
@@ -508,13 +634,15 @@ class SpaceFaultRecoveryEnvironment(Environment):
             if sc.attitude_mode != "tumbling":
                 sc.attitude_mode = "tumbling"
 
-        # Track consecutive steps where all faults cleared and state is healthy
+        # Track consecutive steps where ALL faults cleared and state is healthy.
+        # active_faults is the authoritative source — if any remain, not stable.
         stable = (
-            not sc.power_controller_fault
+            len(sc.active_faults) == 0
+            and not sc.power_controller_fault
             and not sc.attitude_fault
             and not sc.thermal_fault
             and not sc.comms_fault
-            and sc.rw_status != "failed"
+            and sc.rw_status == "nominal"
             and sc.battery_pct >= 40.0
             and sc.attitude_error < 3.0
             and not sc.safe_mode
@@ -547,6 +675,7 @@ class SpaceFaultRecoveryEnvironment(Environment):
         sc = self._sc
         reward = 0.0
 
+        # If resume_nominal already set recovered, grant the terminal bonus
         if sc.mission_status == "recovered":
             return 10.0
 
@@ -573,6 +702,7 @@ class SpaceFaultRecoveryEnvironment(Environment):
             or sc.safe_mode
         )
 
+        # _evaluate_status never sets "recovered" — only resume_nominal can.
         if critical:
             sc.mission_status = "critical"
             reward -= 0.5
@@ -580,6 +710,9 @@ class SpaceFaultRecoveryEnvironment(Environment):
             sc.mission_status = "degraded"
             reward -= 0.05
         else:
+            # All faults cleared and margins healthy, but agent hasn't
+            # called resume_nominal yet — stay "degraded" to force the
+            # explicit recovery action.
             sc.mission_status = "nominal"
             reward += 0.1
 
@@ -667,21 +800,38 @@ if __name__ == "__main__":
           f"{obs.solar_b_sensor_output_w}W) st_err={obs.star_tracker_deg}deg")
 
     seq = [
+        # 1. Diagnose everything
         ("diagnostic_scan", "power"),
         ("diagnostic_scan", "attitude"),
+        ("diagnostic_scan", "comms"),
         ("query_thermal", None),
+        ("query_power_level", "battery"),     # diagnose battery_drain
+        ("query_power_level", "solar_a"),     # diagnose solar_a
+        ("query_power_level", "solar_b"),     # diagnose solar_b
+        ("cross_validate_attitude", None),    # diagnose attitude_drift + comms_degraded
+        ("query_attitude", None),             # diagnose rw_fault
+        # 2. Shed non-essentials
         ("shed_load", "science_a"),
         ("shed_load", "science_b"),
+        # 3. Fix faults (order matters)
         ("reset_power_controller", None),
+        ("reconfigure_power", "solar_a"),
+        ("reconfigure_power", "solar_b"),
         ("recalibrate_star_tracker", None),
         ("desaturate_wheels", None),
+        ("desaturate_wheels", None),         # may need two passes
         ("recalibrate_imu", None),
         ("restore_load", "heaters"),
-        ("shed_load", "transponder"),     # power-cycle comms: shed first
-        ("restore_load", "transponder"),  # then restore to clear comms_degraded
+        ("shed_load", "transponder"),        # power-cycle comms: shed first
+        ("restore_load", "transponder"),     # then restore to clear comms_degraded
+        # 4. Stabilize attitude
         ("stabilize_attitude", None),
         ("stabilize_attitude", None),
         ("stabilize_attitude", None),
+        # 5. Wait for stable steps, then resume
+        ("query_attitude", None),          # burn stable steps
+        ("query_thermal", None),
+        ("query_power_level", "battery"),
         ("resume_nominal", None),
         ("resume_nominal", None),
         ("resume_nominal", None),
