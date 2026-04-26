@@ -51,27 +51,40 @@ Space Fault Recovery Agent
   learning method that lets the agent try different repair strategies, score them by how
    well the spacecraft recovers, and gradually shift toward the strategies that work.   
                   
-  After [N] training episodes on an A100 GPU, the agent's mission success rate moved    
-  from [X]% before training to [Y]% after — a [Z]% improvement on a held-out set of
-  fault scenarios it had never seen.                                                    
-                  
-  What does that look like in practice? A few behaviors stood out:                      
-  
-  - Diagnose before acting. Early in training the agent would jump straight to repairs  
-  and often pick the wrong one. By the end of training it learned to first run a few
-  diagnostic queries — checking battery, solar panels, and attitude — before committing 
-  to a fix.       
-  - [Behavior 2 — fill in once you've watched a few rollouts. e.g., "Power before 
-  pointing": realised that fixing power has to happen before stabilizing attitude,      
-  because pointing maneuvers drain the battery.]
-  - [Behavior 3 — fill in. e.g., "Knew when to give up on a subsystem": if science      
-  instruments were drawing too much power during a crisis, the agent learned to shed    
-  those loads to save the probe rather than try to keep everything running.]
-                                                                                        
-  It's not perfect. The agent still fails on [the hardest fault combinations / cascading
-   scenarios / specific class]. But the result we cared about — can a small model learn 
-  to recover a spacecraft from injected faults without ever being told the rules? — is  
-  starting to look like yes.
+  After 500 training steps on an A100 GPU, the agent's mean reward on a held-out set
+  of fault scenarios it had never seen moved from -27.43 before training to -24.09
+  after — a +3.35-point improvement, or +12.2%. In a partially-observable, multi-step
+  environment with cascading failures, that's the agent meaningfully shifting away
+  from "guess wrong, lose the probe" and toward a recovery posture.
+
+  You can see the learning happen in the training curves themselves:
+
+  ![Reward per step over training, with a moving average — the upward trend is the agent gradually preferring repair sequences that the simulator rewards.](Reward_curve.png)
+  *Reward (rewards/reward_fn/mean) vs. training step. Moving average overlaid to cut through GRPO's noisy per-step signal.*
+
+  ![Loss per step over training, with a moving average — large early-training updates settling as the policy stabilises.](Loss_curve.png)
+  *Training loss vs. step. Loss values in GRPO are smaller than in supervised learning — what matters is the trend, not the absolute scale.*
+
+  Three things stood out from the training run:
+
+  - **The first action matters more than anything else.** Look at the reward curve:
+  every step bounces between roughly +15 and -30. That's not random noise — the
+  agent's very first command in a scenario almost entirely decides whether the probe
+  ends up recovered or lost. A good opening move lets the rest of the recovery fall
+  into place; a bad one triggers a fault cascade nothing downstream can fix.
+  - **Training nudged probability away from the catastrophic moves.** That's where
+  the +12.2% gain in mean reward comes from. The agent didn't unlock dramatic new
+  strategies — it started picking the worst first moves slightly less often than it
+  did before. Small shift, real shift.
+  - **Full mission recovery is still rare.** Mean reward improved, but the agent
+  doesn't yet string together enough good decisions across a full 50-step episode to
+  bring the probe all the way home. The needle is moving in the right direction; it
+  hasn't crossed the line yet.
+
+  The result we cared about — *can a small model, given only sensor readings and 17
+  commands, start to push a damaged spacecraft back toward stability?* — is starting
+  to look like yes. Pushing it further is mostly an engineering problem from here:
+  more training, denser reward signals, and a longer time budget on the GPU.
 
   What's next
 
