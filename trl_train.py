@@ -248,7 +248,7 @@ def _action_from_model(prompt: str) -> ActionSpec:
         with torch.no_grad():
             generated = _MODEL.generate(
                 **encoded,
-                max_new_tokens=24,
+                max_new_tokens=64,
                 do_sample=True,
                 temperature=0.8,
                 top_p=0.9,
@@ -459,7 +459,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed-base", type=int, default=10_000)
     # GRPO hyperparameters
     parser.add_argument("--num-generations", type=int, default=4)
-    parser.add_argument("--max-completion-length", type=int, default=40)
+    parser.add_argument("--max-completion-length", type=int, default=128)
     parser.add_argument("--per-device-train-batch-size", type=int, default=2)
     parser.add_argument("--learning-rate", type=float, default=5e-6)
     parser.add_argument("--logging-steps", type=int, default=1)
