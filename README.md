@@ -169,6 +169,26 @@ curl -X POST localhost:8000/step -H "Content-Type: application/json" \
   -d '{"command": "shed_load", "target": "science_a"}'
 ```
 
+## Training an LLM with GRPO
+
+The environment is designed to train LLMs via reinforcement learning.
+We use HF TRL's GRPO algorithm on `Qwen/Qwen2.5-1.5B-Instruct`.
+
+**Colab notebook:** [`training/train_grpo.ipynb`](training/train_grpo.ipynb)  
+**Training guide:** [`TRAINING.md`](TRAINING.md)
+
+Quick start (A10G, ~35 min, ~$1.50):
+
+```bash
+pip install -r training/requirements-train.txt
+python trl_train.py --use-lora --max-steps 500 --report-to wandb --run-name grpo-lora-500
+```
+
+Training evidence (reward curves, before/after evaluation) is written to
+`logs/grpo/<run-name>/` and synced to WandB.
+
+<!-- TODO: add WandB run link and reward curve PNG after first training run -->
+
 ## Project Structure
 
 ```
@@ -176,11 +196,22 @@ space_fault_recovery/
 ├── __init__.py                              # Module exports
 ├── README.md                                # This file
 ├── CLAUDE.md                                # Repo guidance for Claude Code
+├── TRAINING.md                              # Training pipeline guide
 ├── openenv.yaml                             # OpenEnv manifest
 ├── pyproject.toml                           # Project metadata and dependencies
 ├── uv.lock                                  # Locked dependencies
+├── trl_train.py                             # GRPO training script (HF TRL)
 ├── client.py                                # SpaceFaultRecoveryEnv WebSocket client
 ├── models.py                                # SpaceFaultAction / SpaceFaultObservation
+├── training/
+│   ├── train_grpo.ipynb                     # Colab-runnable GRPO notebook
+│   ├── train.py                             # Linear Q-learning baseline
+│   ├── requirements-train.txt               # Training-only pip deps
+│   ├── action_space.py                      # Full 31-action discrete space
+│   ├── features.py                          # Observation encoder (Q-learning)
+│   ├── agent.py                             # LinearQAgent
+│   ├── plotting.py                          # SVG plot generation
+│   └── openenv_compat.py                    # Shims for training without OpenEnv installed
 └── server/
     ├── __init__.py
     ├── space_fault_recovery_environment.py  # Cascade simulation logic
