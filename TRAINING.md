@@ -5,6 +5,86 @@ fault recovery. The environment injects hidden faults, exposes only telemetry
 and diagnostic text, and rewards policies that diagnose before repair, preserve
 power/attitude margins, and explicitly resume nominal operations.
 
+---
+
+## GRPO Training with HF TRL (required for hackathon submission)
+
+`trl_train.py` trains `Qwen/Qwen2.5-1.5B-Instruct` with GRPO against the live
+environment. The reward function runs full episode rollouts — the model sees
+real telemetry and is rewarded for recovering the spacecraft.
+
+### Install training dependencies
+
+```bash
+pip install -r training/requirements-train.txt
+```
+
+### Quick smoke run (CPU, ~1 min, no GPU needed)
+
+> **Note:** `training/requirements-train.txt` includes `bitsandbytes`, which may
+> fail to install on CPU-only or non-Linux machines. If you hit install errors,
+> install deps manually without it: `pip install torch transformers trl peft accelerate datasets wandb matplotlib`.
+
+```bash
+python trl_train.py \
+  --max-steps 2 \
+  --num-prompts 8 \
+  --eval-episodes 2 \
+  --skip-pretrain-eval \
+  --report-to none
+```
+
+### Full run on HF Jobs / Colab A10G (recommended)
+
+```bash
+python trl_train.py \
+  --use-lora \
+  --max-steps 500 \
+  --num-prompts 256 \
+  --eval-episodes 20 \
+  --report-to wandb \
+  --wandb-project space-fault-trl \
+  --run-name grpo-lora-500
+```
+
+Expected wall time: ~35–45 min on A10G (~$1.50 in HF credits).  
+Use `--load-in-4bit` for T4 runs to fit within 16 GB VRAM.
+
+### Colab notebook
+
+`training/train_grpo.ipynb` is a self-contained Colab-runnable notebook that
+installs deps, runs pre/post-training evaluation, and saves reward curve PNGs.
+
+### Key flags
+
+| Flag | Default | Description |
+|---|---|---|
+| `--use-lora` | off | LoRA adapters (r=16, alpha=32) — required for A10G |
+| `--load-in-4bit` | off | NF4 quantization — for T4 (16 GB) runs |
+| `--max-steps` | 500 | GRPO gradient steps |
+| `--num-prompts` | 256 | Dataset size (40% step-0, 30% after 5 steps, 30% after 10) |
+| `--report-to wandb` | none | Enable WandB logging |
+| `--run-name` | grpo-run | Name for output dir and WandB run |
+| `--skip-pretrain-eval` | off | Skip base-model eval (saves ~2 min) |
+
+### Outputs
+
+Each run writes to `logs/grpo/<run-name>/`:
+
+```
+config.json           — hyperparameter record
+train_log.csv         — per-step reward and loss
+eval_pretrain.json    — base model mean reward + success rate
+eval_posttrain.json   — trained model mean reward + success rate
+plots/
+  grpo_reward_curve.png
+  grpo_loss_curve.png
+```
+
+---
+
+## Linear Q-learning baseline (for comparison only)
+
 Run a local training job:
 
 ```bash
