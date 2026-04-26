@@ -40,6 +40,44 @@ _ACTION_LOOKUP: dict[str, ActionSpec] = {a.label: a for a in _ACTION_SPACE}
 _MODEL: AutoModelForCausalLM | None = None
 _TOKENIZER: AutoTokenizer | None = None
 
+# Expert sequence used as the continuation policy inside _rollout_reward.
+# After the model's first action, this scripted policy plays out the rest
+# of the episode. This makes reward_fn pure-Python (<1ms per episode) while
+# still giving a meaningful multi-step signal: if the model's first action
+# was correct, the expert can capitalise; if it was bad, recovery stalls.
+_EXPERT_CONTINUATION: tuple[str, ...] = (
+    "diagnostic_scan:power",
+    "query_power_level:battery",
+    "query_power_level:solar_a",
+    "query_power_level:solar_b",
+    "diagnostic_scan:attitude",
+    "query_attitude",
+    "query_thermal",
+    "diagnostic_scan:comms",
+    "cross_validate_attitude",
+    "shed_load:science_a",
+    "shed_load:science_b",
+    "reset_power_controller",
+    "recalibrate_star_tracker",
+    "desaturate_wheels",
+    "desaturate_wheels",
+    "recalibrate_imu",
+    "reconfigure_power:solar_a",
+    "reconfigure_power:solar_b",
+    "restore_load:heaters",
+    "shed_load:transponder",
+    "restore_load:transponder",
+    "stabilize_attitude",
+    "stabilize_attitude",
+    "stabilize_attitude",
+    "query_attitude",
+    "query_thermal",
+    "query_power_level:battery",
+    "resume_nominal",
+    "resume_nominal",
+    "resume_nominal",
+)
+
 # Diagnostic steps used to fast-forward into mid-episode training states.
 # The agent sees richer last_action_result text at these states, which is
 # exactly where the hard repair decisions happen.
@@ -263,11 +301,18 @@ def _rollout_reward(
     obs = env.step(first_action.to_action())
     total_reward += float(obs.reward or 0.0)
 
+    # Scripted expert continuation — no LLM calls here.
+    # Using _action_from_model for 40+ continuation steps per completion
+    # would take ~320 LLM calls per training step (~16 hours for 500 steps).
+    # The scripted policy gives a clean, fast reward signal: a good first
+    # action enables expert recovery; a bad one prevents it.
+    cont_step = 0
     while not bool(getattr(obs, "done", False)) and int(getattr(obs, "step", 0)) < MAX_STEPS:
-        prompt = obs_to_prompt(obs, seed=seed)
-        action = _action_from_model(prompt)
+        label = _EXPERT_CONTINUATION[cont_step % len(_EXPERT_CONTINUATION)]
+        action = _ACTION_LOOKUP.get(label, _ACTION_LOOKUP[FALLBACK_ACTION])
         obs = env.step(action.to_action())
         total_reward += float(obs.reward or 0.0)
+        cont_step += 1
 
     status = str(getattr(obs, "mission_status", ""))
     if status == "recovered":
