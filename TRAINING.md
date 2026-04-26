@@ -23,7 +23,7 @@ pip install -r training/requirements-train.txt
 
 > **Note:** `training/requirements-train.txt` includes `bitsandbytes`, which may
 > fail to install on CPU-only or non-Linux machines. If you hit install errors,
-> skip it with `pip install $(grep -v bitsandbytes training/requirements-train.txt | grep -v '^#')`.
+> install deps manually without it: `pip install torch transformers trl peft accelerate datasets wandb matplotlib`.
 
 ```bash
 python trl_train.py \
