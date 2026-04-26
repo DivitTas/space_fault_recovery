@@ -537,7 +537,7 @@ def main() -> None:
         )
     else:
         model_kwargs["torch_dtype"] = (
-            torch.float16 if torch.cuda.is_available() else torch.float32
+            torch.bfloat16 if torch.cuda.is_available() else torch.float32
         )
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
@@ -545,6 +545,18 @@ def main() -> None:
         tokenizer.pad_token = tokenizer.eos_token
 
     model = AutoModelForCausalLM.from_pretrained(args.model_name, **model_kwargs)
+
+    # Qwen2.5-Instruct ends turns with <|im_end|> (151645); ensure generation
+    # stops there.  Without this, every completion hits max_completion_length,
+    # loss stays 0, gradients explode, and the sampler NaN-crashes on step 2.
+    qwen_stop_ids = [151645, 151643]  # <|im_end|>, <|endoftext|>
+    if hasattr(model, "generation_config"):
+        eos = model.generation_config.eos_token_id
+        if isinstance(eos, int):
+            eos = [eos]
+        combined = list(dict.fromkeys((eos or []) + qwen_stop_ids))
+        model.generation_config.eos_token_id = combined
+
     _MODEL = model
     _TOKENIZER = tokenizer
 
@@ -594,6 +606,8 @@ def main() -> None:
         max_steps=args.max_steps,
         report_to=args.report_to,
         run_name=args.run_name,
+        max_grad_norm=1.0,
+        bf16=torch.cuda.is_available(),
     )
 
     csv_callback = LocalCSVCallback(log_dir / "train_log.csv")
