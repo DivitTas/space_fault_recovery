@@ -1,0 +1,31 @@
+{
+  "episode_metrics_csv": "metrics.csv",
+  "step_metrics_csv": "steps.csv",
+  "model_json": "model.json",
+  "config_json": "config.json",
+  "metrics": {
+    "total_reward": "Sum of environment rewards collected in the episode.",
+    "mean_loss": "Mean temporal-difference loss from Q-learning updates.",
+    "max_loss": "Largest temporal-difference loss seen in the episode.",
+    "steps": "Number of environment steps executed before termination or timeout.",
+    "recovered": "1 when the final mission_status is recovered, else 0.",
+    "lost": "1 when the final mission_status is lost, else 0.",
+    "final_status": "Final mission_status reported by the environment.",
+    "final_battery_pct": "Battery state of charge at the end of the episode.",
+    "final_attitude_error": "Sun-sensor pointing error at the end of the episode.",
+    "final_fuel_units": "Remaining thruster fuel at the end of the episode.",
+    "invalid_action_count": "Count of actions producing error/refused results.",
+    "diagnostic_action_count": "Count of diagnostic-style actions used in the episode.",
+    "rolling_reward_20": "Trailing 20-episode mean of total_reward.",
+    "rolling_loss_20": "Trailing 20-episode mean of mean_loss.",
+    "rolling_success_rate_20": "Trailing 20-episode recovery rate.",
+    "eval_mean_reward": "Greedy-policy evaluation reward when --eval-every fires.",
+    "eval_success_rate": "Greedy-policy recovery rate when --eval-every fires."
+  },
+  "graphs": {
+    "plots/reward_curve.svg": "Episode total reward with trailing 20-episode average.",
+    "plots/loss_curve.svg": "Mean TD loss with trailing 20-episode average.",
+    "plots/success_rate_curve.svg": "Trailing 20-episode recovery success rate.",
+    "plots/episode_length_curve.svg": "Episode length in steps."
+  }
+}

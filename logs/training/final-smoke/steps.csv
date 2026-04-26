@@ -1,0 +1,827 @@
+episode,step,action_index,action_label,reward,loss,done,mission_status,battery_pct,attitude_error,fuel_units,last_action_result
+1,1,22,query_power_level:solar_a,0.000000,0.001239,0,degraded,100.000,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+1,2,23,query_power_level:solar_b,0.000000,0.001066,0,degraded,100.000,0.000,50.000,diag: solar_b output=22.1W health=0.25 (panel DEGRADED)
+1,3,21,query_power_level:battery,0.000000,0.001412,0,degraded,100.000,0.000,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+1,4,26,diagnostic_scan:power,0.050000,0.008334,0,degraded,100.000,0.000,50.000,diag-scan power: bat=100.0% solar=112.1W load=105.0W net=positive pcf=False
+1,5,27,diagnostic_scan:attitude,0.050000,0.001753,0,degraded,100.000,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.50 st_fault=False ref=star_tracker
+1,6,28,diagnostic_scan:comms,0.050000,0.006687,0,degraded,100.000,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+1,7,25,query_thermal,0.000000,0.003384,0,degraded,100.000,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+1,8,16,cross_validate_attitude,-0.050000,0.000385,0,degraded,100.000,0.000,50.000,diag: ST=0.00deg GY=1.02deg SUN=0.00deg disagree=0.00
+1,9,24,query_attitude,0.000000,0.004117,0,degraded,100.000,0.000,50.000,diag: mode=nominal err=0.00deg rw=degraded ref=star_tracker st_bias=0.0 gyro_bias=1.0
+1,10,0,shed_load:science_a,-0.150000,0.000630,0,degraded,100.000,0.000,50.000,science_a powered off
+1,11,1,shed_load:science_b,-0.150000,0.005408,0,degraded,100.000,0.000,50.000,science_b powered off
+1,12,9,reset_power_controller,-0.250000,0.021925,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+1,13,10,reconfigure_power:solar_a,-0.350000,0.036514,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+1,14,11,reconfigure_power:solar_b,0.950000,0.524775,0,degraded,100.000,0.000,50.000,solar_b reconfigured successfully; fault cleared (health 0.25 -> 0.65)
+1,15,10,reconfigure_power:solar_a,-0.350000,0.021669,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+1,16,11,reconfigure_power:solar_b,-0.350000,0.068897,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+1,17,15,recalibrate_star_tracker,-0.250000,0.000010,0,degraded,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+1,18,14,desaturate_wheels,0.600000,0.331843,0,nominal,100.000,0.000,46.000,wheels desaturated; rw_fault cleared (degradation 0.26)
+1,19,14,desaturate_wheels,0.300000,0.039843,0,nominal,100.000,0.000,42.000,wheels desaturated; degradation now 0.00
+1,20,20,recalibrate_imu,0.500000,0.466127,0,nominal,100.000,0.000,42.000,IMU recalibrated; gyro bias 1.37 cleared
+1,21,6,restore_load:heaters,-0.100000,0.054316,0,nominal,100.000,0.000,42.000,heaters already online
+1,22,3,shed_load:transponder,0.000000,0.053181,0,nominal,100.000,0.000,42.000,transponder powered off
+1,23,7,restore_load:transponder,0.200000,0.189566,0,nominal,100.000,0.000,42.000,transponder restored
+1,24,12,stabilize_attitude,0.000000,0.082839,0,nominal,100.000,0.000,40.000,attitude stabilization burn; pointing error 0.00deg
+1,25,12,stabilize_attitude,0.000000,0.025589,0,nominal,100.000,0.000,38.000,attitude stabilization burn; pointing error 0.00deg
+1,26,12,stabilize_attitude,0.000000,0.007944,0,nominal,100.000,0.000,36.000,attitude stabilization burn; pointing error 0.00deg
+1,27,24,query_attitude,0.150000,0.155408,0,nominal,100.000,0.000,36.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+1,28,25,query_thermal,0.150000,0.158324,0,nominal,100.000,0.000,36.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+1,29,21,query_power_level:battery,0.150000,0.165534,0,nominal,100.000,0.000,36.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+1,30,30,resume_nominal,10.000000,49.738164,1,recovered,100.000,0.000,36.000,nominal operations resumed; mission recovered
+2,1,22,query_power_level:solar_a,0.000000,2.096363,0,degraded,59.190,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+2,2,23,query_power_level:solar_b,0.000000,2.068069,0,degraded,60.860,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+2,3,21,query_power_level:battery,0.000000,1.617412,0,degraded,62.530,0.000,50.000,diag: battery_pct=60.9% health=0.69 backup=False pcf=True
+2,4,26,diagnostic_scan:power,0.050000,2.173437,0,degraded,64.190,0.000,50.000,diag-scan power: bat=62.5% solar=180.0W load=105.0W net=positive pcf=True
+2,5,27,diagnostic_scan:attitude,0.050000,2.127914,0,degraded,65.860,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+2,6,28,diagnostic_scan:comms,0.050000,2.153665,0,degraded,67.530,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+2,7,25,query_thermal,0.000000,1.647185,0,degraded,68.870,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+2,8,16,cross_validate_attitude,-0.050000,2.078967,0,degraded,68.870,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+2,9,24,query_attitude,0.000000,1.669163,0,degraded,68.870,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+2,10,0,shed_load:science_a,0.250000,2.550311,0,degraded,68.870,0.000,50.000,science_a powered off
+2,11,1,shed_load:science_b,0.250000,2.500251,0,degraded,68.870,0.000,50.000,science_b powered off
+2,12,9,reset_power_controller,0.900000,4.718355,0,nominal,68.870,0.000,50.000,power controller reset; drain fault cleared
+2,13,10,reconfigure_power:solar_a,-0.200000,1.911501,0,nominal,68.870,0.000,50.000,solar_a has no active fault to reconfigure
+2,14,11,reconfigure_power:solar_b,-0.200000,1.442413,0,nominal,68.870,0.000,50.000,solar_b has no active fault to reconfigure
+2,15,10,reconfigure_power:solar_a,-0.200000,0.582156,0,nominal,68.870,0.000,50.000,solar_a has no active fault to reconfigure
+2,16,11,reconfigure_power:solar_b,-0.200000,0.438920,0,nominal,68.870,0.000,50.000,solar_b has no active fault to reconfigure
+2,17,15,recalibrate_star_tracker,-0.100000,2.039004,0,nominal,68.870,0.000,50.000,star tracker nominal; recalibration unnecessary
+2,18,14,desaturate_wheels,0.000000,1.396344,0,nominal,68.870,0.000,50.000,wheels already nominal; desaturation unnecessary
+2,19,14,desaturate_wheels,0.000000,0.421576,0,nominal,68.870,0.000,50.000,wheels already nominal; desaturation unnecessary
+2,20,20,recalibrate_imu,0.150000,1.783157,0,nominal,68.870,0.000,50.000,IMU recalibrated (bias was negligible)
+2,21,6,restore_load:heaters,-0.100000,1.776172,0,nominal,68.870,0.000,50.000,heaters already online
+2,22,3,shed_load:transponder,0.000000,1.024854,0,nominal,68.870,0.000,50.000,transponder powered off
+2,23,7,restore_load:transponder,0.200000,2.168661,0,nominal,68.870,0.000,50.000,transponder restored
+2,24,12,stabilize_attitude,0.000000,1.565490,0,nominal,68.870,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+2,25,12,stabilize_attitude,0.000000,0.466637,0,nominal,68.870,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+2,26,12,stabilize_attitude,0.000000,0.140395,0,nominal,68.870,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+2,27,24,query_attitude,0.150000,0.962880,0,nominal,68.870,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+2,28,25,query_thermal,0.150000,0.878033,0,nominal,68.870,0.000,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+2,29,21,query_power_level:battery,0.150000,0.908117,0,nominal,68.870,0.000,44.000,diag: battery_pct=68.9% health=0.69 backup=False pcf=False
+2,30,30,resume_nominal,10.000000,28.953509,1,recovered,68.870,0.000,44.000,nominal operations resumed; mission recovered
+3,1,22,query_power_level:solar_a,0.000000,4.662238,0,degraded,60.300,3.158,50.000,diag: solar_a output=78.5W health=1.00 (panel nominal)
+3,2,23,query_power_level:solar_b,0.000000,4.426678,0,degraded,60.300,3.758,50.000,diag: solar_b output=75.8W health=1.00 (panel nominal)
+3,3,21,query_power_level:battery,0.000000,2.563374,0,degraded,60.300,4.358,50.000,diag: battery_pct=60.3% health=0.60 backup=False pcf=True
+3,4,26,diagnostic_scan:power,0.050000,4.401569,0,degraded,60.300,4.958,50.000,diag-scan power: bat=60.3% solar=140.8W load=105.0W net=positive pcf=True
+3,5,27,diagnostic_scan:attitude,0.050000,4.146365,0,degraded,60.300,5.558,50.000,diag-scan attitude: mode=nominal err=4.96deg rw_deg=0.00 st_fault=True ref=star_tracker
+3,6,28,diagnostic_scan:comms,0.050000,4.148437,0,degraded,60.300,6.158,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+3,7,25,query_thermal,0.000000,2.393910,0,degraded,60.120,6.758,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+3,8,16,cross_validate_attitude,0.050000,4.270059,0,degraded,59.760,7.358,50.000,diag: ST=11.09deg GY=6.76deg SUN=6.76deg disagree=4.34
+3,9,24,query_attitude,0.000000,2.391285,0,degraded,59.220,7.958,50.000,diag: mode=nominal err=7.36deg rw=nominal ref=star_tracker st_bias=4.3 gyro_bias=0.0
+3,10,0,shed_load:science_a,0.250000,3.790210,0,degraded,59.330,8.558,50.000,science_a powered off
+3,11,1,shed_load:science_b,0.250000,4.086097,0,degraded,60.090,9.158,50.000,science_b powered off
+3,12,9,reset_power_controller,0.750000,4.825406,0,degraded,60.300,9.758,50.000,power controller reset; drain fault cleared
+3,13,10,reconfigure_power:solar_a,-0.350000,2.165712,0,degraded,60.300,10.358,50.000,solar_a has no active fault to reconfigure
+3,14,11,reconfigure_power:solar_b,-0.350000,1.911545,0,degraded,60.300,10.958,50.000,solar_b has no active fault to reconfigure
+3,15,10,reconfigure_power:solar_a,-0.350000,0.761132,0,degraded,60.300,11.558,50.000,solar_a has no active fault to reconfigure
+3,16,11,reconfigure_power:solar_b,-0.350000,0.671754,0,degraded,60.300,12.158,50.000,solar_b has no active fault to reconfigure
+3,17,15,recalibrate_star_tracker,0.950000,6.939649,0,degraded,60.300,11.058,50.000,star tracker recalibrated; drift fault cleared
+3,18,14,desaturate_wheels,-0.150000,2.017230,0,degraded,60.300,10.958,50.000,wheels already nominal; desaturation unnecessary
+3,19,14,desaturate_wheels,-0.150000,0.752422,0,degraded,60.300,10.858,50.000,wheels already nominal; desaturation unnecessary
+3,20,20,recalibrate_imu,0.000000,3.154545,0,degraded,60.300,10.758,50.000,IMU recalibrated (bias was negligible)
+3,21,6,restore_load:heaters,-0.250000,3.049431,0,degraded,60.300,10.658,50.000,heaters already online
+3,22,3,shed_load:transponder,-0.150000,1.525310,0,degraded,60.300,10.558,50.000,transponder powered off
+3,23,7,restore_load:transponder,0.050000,3.682453,0,degraded,60.300,10.458,50.000,transponder restored
+3,24,12,stabilize_attitude,0.250000,2.779562,0,degraded,60.300,7.858,48.000,attitude stabilization burn; pointing error 7.96deg
+3,25,12,stabilize_attitude,0.250000,1.092486,0,degraded,60.300,5.258,46.000,attitude stabilization burn; pointing error 5.36deg
+3,26,12,stabilize_attitude,0.400000,0.988685,0,nominal,60.300,2.658,44.000,attitude stabilization burn; pointing error 2.76deg
+3,27,24,query_attitude,0.150000,2.342729,0,nominal,60.300,2.558,44.000,diag: mode=nominal err=2.66deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+3,28,25,query_thermal,0.150000,2.032654,0,nominal,60.300,2.458,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+3,29,21,query_power_level:battery,0.150000,1.939296,0,nominal,60.300,2.358,44.000,diag: battery_pct=60.3% health=0.60 backup=False pcf=False
+3,30,30,resume_nominal,-0.200000,0.266718,0,nominal,60.300,2.258,44.000,"refused: state not stable (err=2.4, bat=60.3%)"
+3,31,30,resume_nominal,-0.200000,0.079371,0,nominal,60.300,2.158,44.000,"refused: state not stable (err=2.3, bat=60.3%)"
+3,32,30,resume_nominal,-0.200000,0.075912,0,nominal,60.300,2.058,44.000,"refused: state not stable (err=2.2, bat=60.3%)"
+3,33,30,resume_nominal,-0.200000,0.045468,0,nominal,60.300,1.958,44.000,"refused: state not stable (err=2.1, bat=60.3%)"
+3,34,6,restore_load:heaters,-0.100000,1.329536,0,nominal,60.300,1.858,44.000,heaters already online
+3,35,16,cross_validate_attitude,0.100000,1.765987,0,nominal,60.300,1.758,44.000,diag: ST=1.86deg GY=1.86deg SUN=1.86deg disagree=0.00
+3,36,8,switch_to_backup_battery,0.100000,7.264785,0,nominal,100.000,1.658,44.000,switched to backup battery
+3,37,26,diagnostic_scan:power,0.200000,1.880685,0,nominal,100.000,1.558,44.000,diag-scan power: bat=100.0% solar=165.1W load=55.0W net=positive pcf=False
+3,38,30,resume_nominal,10.000000,17.864280,1,recovered,100.000,1.458,44.000,nominal operations resumed; mission recovered
+4,1,22,query_power_level:solar_a,0.000000,3.007788,0,degraded,100.000,0.000,50.000,diag: solar_a output=20.1W health=0.22 (panel DEGRADED)
+4,2,23,query_power_level:solar_b,0.000000,2.691696,0,degraded,100.000,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+4,3,21,query_power_level:battery,0.000000,0.916860,0,degraded,100.000,0.000,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+4,4,26,diagnostic_scan:power,0.050000,1.430887,0,degraded,100.000,0.000,50.000,diag-scan power: bat=100.0% solar=110.1W load=105.0W net=positive pcf=False
+4,5,27,diagnostic_scan:attitude,0.050000,2.798977,0,degraded,100.000,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.54 st_fault=False ref=star_tracker
+4,6,28,diagnostic_scan:comms,0.050000,2.874403,0,degraded,100.000,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+4,7,25,query_thermal,0.000000,0.995319,0,degraded,100.000,0.000,50.000,diag: battery_temp=8.3C heaters=offline thermal_fault=True
+4,8,16,cross_validate_attitude,-0.050000,1.540754,0,degraded,100.000,0.000,50.000,diag: ST=0.00deg GY=1.11deg SUN=0.00deg disagree=0.00
+4,9,24,query_attitude,0.000000,1.074955,0,degraded,100.000,0.000,50.000,diag: mode=nominal err=0.00deg rw=degraded ref=star_tracker st_bias=0.0 gyro_bias=1.1
+4,10,0,shed_load:science_a,-0.150000,1.814234,0,degraded,100.000,0.000,50.000,science_a powered off
+4,11,1,shed_load:science_b,-0.150000,2.366294,0,degraded,100.000,0.000,50.000,science_b powered off
+4,12,9,reset_power_controller,-0.250000,1.722416,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+4,13,10,reconfigure_power:solar_a,0.950000,5.261575,0,degraded,100.000,0.000,50.000,solar_a reconfigured successfully; fault cleared (health 0.22 -> 0.62)
+4,14,11,reconfigure_power:solar_b,-0.350000,1.640501,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+4,15,10,reconfigure_power:solar_a,-0.350000,0.177569,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+4,16,11,reconfigure_power:solar_b,-0.350000,0.578773,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+4,17,15,recalibrate_star_tracker,-0.700000,1.514852,0,critical,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+4,18,14,desaturate_wheels,0.000000,2.964107,0,critical,99.000,0.000,46.000,wheels desaturated; rw_fault cleared (degradation 0.30)
+4,19,14,desaturate_wheels,-0.300000,0.553384,0,critical,98.000,0.000,42.000,wheels desaturated; degradation now 0.00
+4,20,20,recalibrate_imu,-0.100000,3.813293,0,critical,97.000,0.000,42.000,IMU recalibrated; gyro bias 1.49 cleared
+4,21,6,restore_load:heaters,-0.400000,3.043765,0,critical,96.000,0.000,42.000,heaters restored
+4,22,3,shed_load:transponder,-0.600000,1.418984,0,critical,95.000,0.000,42.000,transponder powered off
+4,23,7,restore_load:transponder,-0.400000,4.209694,0,critical,94.000,0.000,42.000,transponder restored
+4,24,12,stabilize_attitude,-0.600000,0.413226,0,critical,93.000,0.000,40.000,attitude stabilization burn; pointing error 0.00deg
+4,25,12,stabilize_attitude,-0.600000,0.134960,0,critical,92.000,0.000,38.000,attitude stabilization burn; pointing error 0.00deg
+4,26,12,stabilize_attitude,-0.600000,0.044484,0,critical,91.000,0.000,36.000,attitude stabilization burn; pointing error 0.00deg
+4,27,24,query_attitude,-0.450000,0.966395,0,critical,90.000,0.000,36.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+4,28,25,query_thermal,-0.450000,0.704366,0,critical,89.000,0.000,36.000,diag: battery_temp=-0.6C heaters=online thermal_fault=True
+4,29,21,query_power_level:battery,0.000000,1.361383,0,degraded,88.000,0.000,36.000,diag: battery_pct=89.0% health=0.88 backup=False pcf=False
+4,30,30,resume_nominal,-0.550000,0.828248,0,degraded,88.000,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+4,31,30,resume_nominal,-0.550000,0.306167,0,degraded,88.000,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+4,32,30,resume_nominal,-0.550000,0.286320,0,degraded,88.000,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+4,33,30,resume_nominal,-0.550000,0.085371,0,degraded,88.000,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+4,34,6,restore_load:heaters,-0.250000,0.132681,0,degraded,88.000,0.000,36.000,heaters already online
+4,35,10,reconfigure_power:solar_a,-0.350000,0.000003,0,degraded,88.000,0.000,36.000,solar_a has no active fault to reconfigure
+4,36,12,stabilize_attitude,-0.150000,0.072081,0,degraded,88.000,0.000,34.000,attitude stabilization burn; pointing error 0.00deg
+4,37,20,recalibrate_imu,0.000000,0.578891,0,degraded,88.000,0.000,34.000,IMU recalibrated (bias was negligible)
+4,38,21,query_power_level:battery,0.000000,0.005597,0,degraded,88.000,0.000,34.000,diag: battery_pct=88.0% health=0.88 backup=False pcf=False
+4,39,17,switch_attitude_reference:star_tracker,-0.050000,8.688278,0,degraded,88.000,0.000,34.000,attitude reference set to star_tracker
+4,40,26,diagnostic_scan:power,0.050000,0.538257,0,degraded,88.000,0.000,34.000,diag-scan power: bat=88.0% solar=146.1W load=75.0W net=positive pcf=False
+4,41,0,shed_load:science_a,-0.250000,0.563857,0,degraded,88.000,0.000,34.000,science_a already offline
+4,42,13,switch_to_thruster_control,-0.050000,7.479216,0,degraded,88.000,0.000,32.500,ACS switched to thruster control
+4,43,7,restore_load:transponder,-0.250000,1.183872,0,degraded,88.000,0.000,31.000,transponder already online
+4,44,9,reset_power_controller,-0.250000,0.278782,0,degraded,88.000,0.000,29.500,power controller nominal; reset had no effect
+4,45,12,stabilize_attitude,-0.150000,0.024138,0,degraded,88.000,0.000,26.000,attitude stabilization burn; pointing error 0.00deg
+4,46,2,shed_load:heaters,-0.150000,5.960353,0,degraded,88.000,0.000,24.500,WARNING: heaters powered off while battery_temp_c is very low (4.3C)
+4,47,5,restore_load:science_b,0.050000,7.112774,0,degraded,88.000,0.000,23.000,science_b restored
+4,48,0,shed_load:science_a,-0.250000,0.180872,0,degraded,88.000,0.000,21.500,science_a already offline
+4,49,19,switch_attitude_reference:sun_sensor,-0.050000,6.786755,0,degraded,88.000,0.000,20.000,attitude reference set to sun_sensor
+4,50,11,reconfigure_power:solar_b,-10.350000,89.395742,1,lost,88.000,0.000,18.500,solar_b has no active fault to reconfigure
+5,1,0,shed_load:science_a,-0.150000,0.025333,0,degraded,100.000,4.944,50.000,science_a powered off
+5,2,22,query_power_level:solar_a,0.000000,0.573266,0,degraded,100.000,5.544,50.000,diag: solar_a output=67.8W health=1.00 (panel nominal)
+5,3,1,shed_load:science_b,-0.150000,0.210056,0,degraded,100.000,6.144,50.000,science_b powered off
+5,4,23,query_power_level:solar_b,0.000000,0.785025,0,degraded,100.000,6.744,50.000,diag: solar_b output=62.4W health=1.00 (panel nominal)
+5,5,27,diagnostic_scan:attitude,0.050000,0.565624,0,degraded,100.000,7.344,50.000,diag-scan attitude: mode=nominal err=6.74deg rw_deg=0.00 st_fault=True ref=star_tracker
+5,6,11,reconfigure_power:solar_b,-0.350000,0.957934,0,degraded,100.000,7.944,50.000,solar_b has no active fault to reconfigure
+5,7,30,resume_nominal,-0.550000,0.060307,0,degraded,100.000,8.544,50.000,refused: 2 unresolved fault(s) - resolve before resuming nominal
+5,8,28,diagnostic_scan:comms,0.050000,0.811583,0,degraded,100.000,9.144,50.000,diag-scan comms: transponder=online signal=8.0dB comms_fault=True pending_cycle=False
+5,9,28,diagnostic_scan:comms,0.050000,0.142101,0,degraded,100.000,9.744,50.000,diag-scan comms: transponder=online signal=8.0dB comms_fault=True pending_cycle=False
+5,10,29,safe_mode,-0.250000,4.177721,0,degraded,100.000,9.344,50.000,safe mode engaged; non-essentials shed
+5,11,12,stabilize_attitude,0.250000,0.068957,0,degraded,100.000,7.444,48.000,attitude stabilization burn; pointing error 6.84deg
+5,12,6,restore_load:heaters,-0.250000,0.046885,0,degraded,100.000,8.044,48.000,heaters already online
+5,13,1,shed_load:science_b,-0.250000,0.180075,0,degraded,100.000,8.644,48.000,science_b already offline
+5,14,27,diagnostic_scan:attitude,0.050000,0.374203,0,degraded,100.000,9.244,48.000,diag-scan attitude: mode=nominal err=8.64deg rw_deg=0.00 st_fault=True ref=star_tracker
+5,15,24,query_attitude,0.000000,0.000018,0,degraded,100.000,9.844,48.000,diag: mode=nominal err=9.24deg rw=nominal ref=star_tracker st_bias=7.3 gyro_bias=0.0
+5,16,26,diagnostic_scan:power,0.050000,0.032131,0,degraded,100.000,10.444,48.000,diag-scan power: bat=100.0% solar=91.4W load=40.0W net=positive pcf=False
+5,17,20,recalibrate_imu,0.000000,0.184940,0,degraded,100.000,11.044,48.000,IMU recalibrated (bias was negligible)
+5,18,3,shed_load:transponder,-0.250000,0.943361,0,degraded,100.000,11.644,48.000,transponder already offline
+5,19,25,query_thermal,0.000000,0.040143,0,degraded,100.000,12.244,48.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+5,20,6,restore_load:heaters,-0.250000,0.018319,0,degraded,100.000,12.844,48.000,heaters already online
+5,21,10,reconfigure_power:solar_a,-0.350000,0.000129,0,degraded,100.000,13.444,48.000,solar_a has no active fault to reconfigure
+5,22,0,shed_load:science_a,-0.250000,0.081479,0,degraded,100.000,14.044,48.000,science_a already offline
+5,23,29,safe_mode,-0.250000,1.536948,0,degraded,100.000,13.644,48.000,safe mode engaged; non-essentials shed
+5,24,22,query_power_level:solar_a,0.000000,0.278072,0,degraded,100.000,14.244,48.000,diag: solar_a output=28.6W health=1.00 (panel nominal)
+5,25,29,safe_mode,-0.250000,0.492428,0,degraded,100.000,13.844,48.000,safe mode engaged; non-essentials shed
+5,26,30,resume_nominal,-0.550000,0.000391,0,degraded,100.000,14.444,48.000,refused: 2 unresolved fault(s) - resolve before resuming nominal
+5,27,15,recalibrate_star_tracker,0.950000,1.842052,0,degraded,100.000,13.344,48.000,star tracker recalibrated; drift fault cleared
+5,28,19,switch_attitude_reference:sun_sensor,-0.050000,2.352325,0,degraded,100.000,13.494,48.000,attitude reference set to sun_sensor
+5,29,25,query_thermal,0.000000,0.017032,0,degraded,100.000,13.644,48.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+5,30,13,switch_to_thruster_control,-0.050000,1.399347,0,degraded,100.000,13.444,46.500,ACS switched to thruster control
+5,31,3,shed_load:transponder,-0.250000,0.369489,0,degraded,100.000,13.244,45.000,transponder already offline
+5,32,22,query_power_level:solar_a,0.000000,0.132094,0,degraded,100.000,13.044,43.500,diag: solar_a output=30.4W health=1.00 (panel nominal)
+5,33,18,switch_attitude_reference:gyro,-0.050000,3.965025,0,degraded,100.000,12.844,42.000,attitude reference set to gyro
+5,34,27,diagnostic_scan:attitude,0.050000,0.158483,0,degraded,100.000,12.644,40.500,diag-scan attitude: mode=thruster err=12.84deg rw_deg=0.00 st_fault=False ref=gyro
+5,35,18,switch_attitude_reference:gyro,-0.050000,1.416329,0,degraded,100.000,12.444,39.000,attitude reference set to gyro
+5,36,5,restore_load:science_b,0.050000,1.841624,0,degraded,99.770,12.244,37.500,science_b restored
+5,37,16,cross_validate_attitude,-0.050000,0.236689,0,degraded,99.590,12.044,36.000,diag: ST=12.24deg GY=12.24deg SUN=12.24deg disagree=0.00
+5,38,24,query_attitude,0.000000,0.002250,0,degraded,99.480,11.844,34.500,diag: mode=thruster err=12.04deg rw=nominal ref=gyro st_bias=0.0 gyro_bias=0.0
+5,39,1,shed_load:science_b,-0.150000,0.057376,0,degraded,100.000,11.644,33.000,science_b powered off
+5,40,15,recalibrate_star_tracker,-0.250000,0.007711,0,degraded,100.000,11.444,31.500,star tracker nominal; recalibration unnecessary
+5,41,22,query_power_level:solar_a,0.000000,0.060554,0,degraded,100.000,11.244,30.000,diag: solar_a output=38.5W health=1.00 (panel nominal)
+5,42,5,restore_load:science_b,0.050000,0.706125,0,degraded,100.000,11.044,28.500,science_b restored
+5,43,18,switch_attitude_reference:gyro,-0.050000,0.671998,0,degraded,100.000,10.844,27.000,attitude reference set to gyro
+5,44,26,diagnostic_scan:power,0.050000,0.074954,0,degraded,100.000,10.644,25.500,diag-scan power: bat=100.0% solar=82.4W load=75.0W net=positive pcf=False
+5,45,18,switch_attitude_reference:gyro,-0.050000,0.159456,0,degraded,100.000,10.444,24.000,attitude reference set to gyro
+5,46,9,reset_power_controller,-0.250000,0.123509,0,degraded,100.000,10.244,22.500,power controller nominal; reset had no effect
+5,47,30,resume_nominal,-0.550000,0.000579,0,degraded,100.000,10.044,21.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+5,48,15,recalibrate_star_tracker,-0.250000,0.001152,0,degraded,100.000,9.844,19.500,star tracker nominal; recalibration unnecessary
+5,49,30,resume_nominal,-0.550000,0.000107,0,degraded,100.000,9.644,18.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+5,50,2,shed_load:heaters,-10.150000,62.389512,1,lost,100.000,9.444,16.500,heaters powered off
+6,1,3,shed_load:transponder,0.250000,0.496059,0,degraded,55.870,0.000,50.000,transponder powered off
+6,2,17,switch_attitude_reference:star_tracker,-0.050000,1.974760,0,degraded,55.870,0.000,50.000,attitude reference set to star_tracker
+6,3,22,query_power_level:solar_a,0.000000,0.001122,0,degraded,55.870,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+6,4,30,resume_nominal,-0.550000,0.008651,0,degraded,55.870,0.000,50.000,refused: 2 unresolved fault(s) - resolve before resuming nominal
+6,5,11,reconfigure_power:solar_b,-0.350000,0.871867,0,degraded,55.870,0.000,50.000,solar_b has no active fault to reconfigure
+6,6,18,switch_attitude_reference:gyro,-0.050000,0.875183,0,degraded,55.870,0.000,50.000,attitude reference set to gyro
+6,7,6,restore_load:heaters,0.250000,0.660803,0,degraded,55.870,0.000,50.000,heaters restored; temperature stabilizing
+6,8,16,cross_validate_attitude,-0.050000,0.122991,0,degraded,55.870,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+6,9,25,query_thermal,0.000000,0.013763,0,degraded,55.870,0.000,50.000,diag: battery_temp=4.5C heaters=online thermal_fault=False
+6,10,16,cross_validate_attitude,-0.050000,0.003781,0,degraded,55.870,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+6,11,23,query_power_level:solar_b,0.000000,0.112342,0,degraded,55.870,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+6,12,6,restore_load:heaters,-0.250000,0.000922,0,degraded,55.870,0.000,50.000,heaters already online
+6,13,22,query_power_level:solar_a,0.000000,0.003113,0,degraded,55.870,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+6,14,24,query_attitude,0.000000,0.000053,0,degraded,55.870,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=gyro st_bias=0.0 gyro_bias=0.0
+6,15,23,query_power_level:solar_b,0.000000,0.033997,0,degraded,55.870,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+6,16,21,query_power_level:battery,0.000000,0.018147,0,degraded,55.870,0.000,50.000,diag: battery_pct=55.9% health=0.56 backup=False pcf=True
+6,17,8,switch_to_backup_battery,0.450000,3.826031,0,degraded,100.000,0.000,50.000,switched to backup battery
+6,18,12,stabilize_attitude,-0.150000,0.005227,0,degraded,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+6,19,2,shed_load:heaters,0.250000,9.664089,0,degraded,100.000,0.000,48.000,heaters powered off
+6,20,13,switch_to_thruster_control,-0.050000,0.902902,0,degraded,100.000,0.000,46.500,ACS switched to thruster control
+6,21,21,query_power_level:battery,0.000000,0.016034,0,degraded,100.000,0.000,45.000,diag: battery_pct=100.0% health=0.56 backup=True pcf=True
+6,22,8,switch_to_backup_battery,-0.350000,0.130790,0,degraded,100.000,0.000,43.500,already on backup battery
+6,23,9,reset_power_controller,0.750000,1.095821,0,degraded,100.000,0.000,42.000,power controller reset; drain fault cleared
+6,24,30,resume_nominal,-0.550000,0.042680,0,degraded,100.000,0.000,40.500,refused: 1 unresolved fault(s) - resolve before resuming nominal
+6,25,7,restore_load:transponder,0.050000,0.780180,0,degraded,100.000,0.000,39.000,transponder restored
+6,26,21,query_power_level:battery,0.000000,0.004466,0,degraded,100.000,0.000,37.500,diag: battery_pct=100.0% health=0.56 backup=True pcf=False
+6,27,5,restore_load:science_b,-0.250000,1.015353,0,degraded,100.000,0.000,36.000,science_b already online
+6,28,24,query_attitude,0.000000,0.018226,0,degraded,100.000,0.000,34.500,diag: mode=thruster err=0.00deg rw=nominal ref=gyro st_bias=0.0 gyro_bias=0.0
+6,29,25,query_thermal,0.000000,0.000065,0,degraded,100.000,0.000,33.000,diag: battery_temp=6.7C heaters=offline thermal_fault=False
+6,30,15,recalibrate_star_tracker,-0.250000,0.307563,0,degraded,100.000,0.000,31.500,star tracker nominal; recalibration unnecessary
+6,31,23,query_power_level:solar_b,0.000000,0.277471,0,degraded,100.000,0.000,30.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+6,32,30,resume_nominal,-0.550000,0.056644,0,degraded,100.000,0.000,28.500,refused: 1 unresolved fault(s) - resolve before resuming nominal
+6,33,21,query_power_level:battery,0.000000,0.004502,0,degraded,100.000,0.000,27.000,diag: battery_pct=100.0% health=0.56 backup=True pcf=False
+6,34,26,diagnostic_scan:power,0.050000,0.014545,0,degraded,100.000,0.000,25.500,diag-scan power: bat=100.0% solar=180.0W load=115.0W net=positive pcf=False
+6,35,13,switch_to_thruster_control,-0.250000,1.153717,0,degraded,100.000,0.000,24.000,already in thruster mode
+6,36,9,reset_power_controller,-0.250000,0.005299,0,degraded,100.000,0.000,22.500,power controller nominal; reset had no effect
+6,37,20,recalibrate_imu,0.000000,0.312517,0,degraded,100.000,0.000,21.000,IMU recalibrated (bias was negligible)
+6,38,26,diagnostic_scan:power,0.050000,0.047737,0,degraded,100.000,0.000,19.500,diag-scan power: bat=100.0% solar=180.0W load=115.0W net=positive pcf=False
+6,39,25,query_thermal,0.000000,0.000528,0,degraded,100.000,0.000,18.000,diag: battery_temp=6.7C heaters=offline thermal_fault=False
+6,40,8,switch_to_backup_battery,-0.350000,0.671286,0,degraded,100.000,0.000,16.500,already on backup battery
+6,41,21,query_power_level:battery,0.000000,0.004551,0,degraded,100.000,0.000,15.000,diag: battery_pct=100.0% health=0.56 backup=True pcf=False
+6,42,13,switch_to_thruster_control,-0.250000,0.288438,0,degraded,100.000,0.000,13.500,already in thruster mode
+6,43,15,recalibrate_star_tracker,-0.250000,0.121495,0,degraded,100.000,0.000,12.000,star tracker nominal; recalibration unnecessary
+6,44,23,query_power_level:solar_b,0.000000,0.124035,0,degraded,100.000,0.000,10.500,diag: solar_b output=90.0W health=1.00 (panel nominal)
+6,45,11,reconfigure_power:solar_b,-0.350000,2.111991,0,degraded,100.000,0.000,9.000,solar_b has no active fault to reconfigure
+6,46,9,reset_power_controller,-0.250000,0.004758,0,degraded,100.000,0.000,7.500,power controller nominal; reset had no effect
+6,47,15,recalibrate_star_tracker,-0.250000,0.032142,0,degraded,100.000,0.000,6.000,star tracker nominal; recalibration unnecessary
+6,48,20,recalibrate_imu,0.000000,0.096613,0,degraded,100.000,0.000,4.500,IMU recalibrated (bias was negligible)
+6,49,28,diagnostic_scan:comms,0.050000,0.486386,0,degraded,100.000,0.000,3.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=True
+6,50,29,safe_mode,-10.250000,68.125992,1,lost,100.000,0.000,1.500,safe mode engaged; non-essentials shed
+7,1,22,query_power_level:solar_a,0.000000,0.140558,0,degraded,67.290,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+7,2,23,query_power_level:solar_b,0.000000,0.000011,0,degraded,67.290,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+7,3,21,query_power_level:battery,0.000000,0.031799,0,degraded,67.290,0.000,50.000,diag: battery_pct=67.3% health=0.67 backup=False pcf=True
+7,4,26,diagnostic_scan:power,0.050000,0.007994,0,degraded,67.290,0.000,50.000,diag-scan power: bat=67.3% solar=180.0W load=105.0W net=positive pcf=True
+7,5,27,diagnostic_scan:attitude,0.050000,0.078673,0,degraded,67.290,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+7,6,28,diagnostic_scan:comms,0.050000,0.014045,0,degraded,67.290,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+7,7,25,query_thermal,0.000000,0.002334,0,degraded,67.290,0.000,50.000,diag: battery_temp=9.1C heaters=offline thermal_fault=True
+7,8,16,cross_validate_attitude,-0.050000,0.055177,0,degraded,67.290,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+7,9,24,query_attitude,0.000000,0.008879,0,degraded,67.290,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+7,10,0,shed_load:science_a,0.250000,0.052409,0,degraded,67.290,0.000,50.000,science_a powered off
+7,11,1,shed_load:science_b,0.250000,0.330453,0,degraded,67.290,0.000,50.000,science_b powered off
+7,12,9,reset_power_controller,0.750000,0.368738,0,degraded,67.290,0.000,50.000,power controller reset; drain fault cleared
+7,13,10,reconfigure_power:solar_a,-0.350000,0.001156,0,degraded,67.290,0.000,50.000,solar_a has no active fault to reconfigure
+7,14,11,reconfigure_power:solar_b,-0.350000,0.115949,0,degraded,67.290,0.000,50.000,solar_b has no active fault to reconfigure
+7,15,10,reconfigure_power:solar_a,-0.350000,0.000390,0,degraded,67.290,0.000,50.000,solar_a has no active fault to reconfigure
+7,16,11,reconfigure_power:solar_b,-0.350000,0.041464,0,degraded,67.290,0.000,50.000,solar_b has no active fault to reconfigure
+7,17,15,recalibrate_star_tracker,-0.250000,0.004847,0,degraded,67.290,0.000,50.000,star tracker nominal; recalibration unnecessary
+7,18,14,desaturate_wheels,-0.600000,0.134221,0,critical,67.290,0.000,50.000,wheels already nominal; desaturation unnecessary
+7,19,14,desaturate_wheels,-0.600000,0.052248,0,critical,66.290,0.000,50.000,wheels already nominal; desaturation unnecessary
+7,20,20,recalibrate_imu,-0.450000,0.127741,0,critical,65.290,0.000,50.000,IMU recalibrated (bias was negligible)
+7,21,6,restore_load:heaters,-0.400000,0.004093,0,critical,64.290,0.000,50.000,heaters restored
+7,22,3,shed_load:transponder,-0.600000,0.006478,0,critical,63.290,0.000,50.000,transponder powered off
+7,23,7,restore_load:transponder,-0.400000,0.005827,0,critical,62.290,0.000,50.000,transponder restored
+7,24,12,stabilize_attitude,-0.600000,0.271458,0,critical,61.290,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+7,25,12,stabilize_attitude,-0.600000,0.085179,0,critical,60.290,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+7,26,12,stabilize_attitude,-0.600000,0.027103,0,critical,59.290,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+7,27,24,query_attitude,0.000000,0.026102,0,degraded,58.290,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+7,28,25,query_thermal,0.000000,0.003068,0,degraded,58.290,0.000,44.000,diag: battery_temp=0.1C heaters=online thermal_fault=True
+7,29,21,query_power_level:battery,0.000000,0.028171,0,degraded,58.290,0.000,44.000,diag: battery_pct=58.3% health=0.58 backup=False pcf=False
+7,30,30,resume_nominal,-0.550000,0.093938,0,degraded,58.290,0.000,44.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+7,31,30,resume_nominal,-0.550000,0.028322,0,degraded,58.290,0.000,44.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+7,32,30,resume_nominal,-0.550000,0.007830,0,degraded,58.290,0.000,44.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+7,33,30,resume_nominal,-0.550000,0.002102,0,degraded,58.290,0.000,44.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+7,34,2,shed_load:heaters,0.250000,4.516784,0,degraded,58.290,0.000,44.000,WARNING: heaters powered off while battery_temp_c is very low (1.8C)
+7,35,28,diagnostic_scan:comms,0.050000,0.106834,0,degraded,58.290,0.000,44.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=True
+7,36,30,resume_nominal,-1.000000,0.496466,0,critical,58.290,0.000,44.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+7,37,26,diagnostic_scan:power,-0.400000,0.007649,0,critical,57.290,0.000,44.000,diag-scan power: bat=58.3% solar=180.0W load=55.0W net=positive pcf=False
+7,38,18,switch_attitude_reference:gyro,-0.500000,1.442734,0,critical,56.290,0.000,44.000,attitude reference set to gyro
+7,39,0,shed_load:science_a,-0.700000,0.000083,0,critical,55.290,0.000,44.000,science_a already offline
+7,40,2,shed_load:heaters,-0.700000,0.316695,0,critical,54.290,0.000,44.000,heaters already offline
+7,41,8,switch_to_backup_battery,-0.500000,0.407876,0,critical,100.000,0.000,44.000,switched to backup battery
+7,42,18,switch_attitude_reference:gyro,-0.500000,0.654755,0,critical,100.000,0.000,44.000,attitude reference set to gyro
+7,43,7,restore_load:transponder,-0.700000,0.024349,0,critical,100.000,0.000,44.000,transponder already online
+7,44,14,desaturate_wheels,-0.600000,0.007950,0,critical,100.000,0.000,44.000,wheels already nominal; desaturation unnecessary
+7,45,4,restore_load:science_a,-0.400000,7.287162,0,critical,100.000,0.000,44.000,science_a restored
+7,46,12,stabilize_attitude,-0.600000,0.006150,0,critical,100.000,0.000,42.000,attitude stabilization burn; pointing error 0.00deg
+7,47,5,restore_load:science_b,-0.400000,0.903425,0,critical,100.000,0.000,42.000,science_b restored
+7,48,22,query_power_level:solar_a,-0.450000,0.006835,0,critical,100.000,0.000,42.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+7,49,25,query_thermal,-0.450000,0.143386,0,critical,100.000,0.000,42.000,diag: battery_temp=-10.2C heaters=offline thermal_fault=True
+7,50,28,diagnostic_scan:comms,-10.400000,111.391681,1,lost,100.000,0.000,42.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=True
+8,1,26,diagnostic_scan:power,0.050000,0.005181,0,degraded,100.000,4.556,50.000,diag-scan power: bat=100.0% solar=144.4W load=105.0W net=positive pcf=False
+8,2,15,recalibrate_star_tracker,0.250000,0.246733,0,degraded,100.000,3.456,50.000,star tracker recalibrated; bias removed
+8,3,16,cross_validate_attitude,-0.050000,0.045923,0,degraded,100.000,3.356,50.000,diag: ST=3.46deg GY=3.46deg SUN=3.46deg disagree=0.00
+8,4,26,diagnostic_scan:power,0.050000,0.010978,0,degraded,100.000,3.256,50.000,diag-scan power: bat=100.0% solar=149.8W load=105.0W net=positive pcf=False
+8,5,28,diagnostic_scan:comms,0.050000,2.458514,0,degraded,100.000,3.156,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+8,6,3,shed_load:transponder,-0.150000,0.111818,0,degraded,100.000,3.056,50.000,transponder powered off
+8,7,7,restore_load:transponder,0.050000,0.357353,0,degraded,100.000,2.956,50.000,transponder restored
+8,8,15,recalibrate_star_tracker,-0.250000,0.005969,0,degraded,100.000,2.856,50.000,star tracker nominal; recalibration unnecessary
+8,9,1,shed_load:science_b,-0.150000,0.065707,0,degraded,100.000,2.756,50.000,science_b powered off
+8,10,28,diagnostic_scan:comms,0.050000,0.761441,0,degraded,100.000,2.656,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=True
+8,11,15,recalibrate_star_tracker,-0.250000,0.020849,0,degraded,100.000,2.556,50.000,star tracker nominal; recalibration unnecessary
+8,12,5,restore_load:science_b,0.050000,0.981707,0,degraded,100.000,2.456,50.000,science_b restored
+8,13,27,diagnostic_scan:attitude,0.050000,0.097692,0,degraded,100.000,2.356,50.000,diag-scan attitude: mode=nominal err=2.46deg rw_deg=0.00 st_fault=False ref=star_tracker
+8,14,5,restore_load:science_b,-0.250000,0.042694,0,degraded,100.000,2.256,50.000,science_b already online
+8,15,14,desaturate_wheels,-0.150000,0.412346,0,degraded,100.000,2.156,50.000,wheels already nominal; desaturation unnecessary
+8,16,15,recalibrate_star_tracker,-0.250000,0.001102,0,degraded,100.000,2.056,50.000,star tracker nominal; recalibration unnecessary
+8,17,26,diagnostic_scan:power,0.050000,0.011695,0,degraded,100.000,1.956,50.000,diag-scan power: bat=100.0% solar=161.5W load=105.0W net=positive pcf=False
+8,18,13,switch_to_thruster_control,-0.050000,0.179304,0,degraded,100.000,1.756,48.500,ACS switched to thruster control
+8,19,30,resume_nominal,-0.550000,0.205573,0,degraded,100.000,1.556,47.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+8,20,5,restore_load:science_b,-0.250000,0.037988,0,degraded,100.000,1.356,45.500,science_b already online
+8,21,20,recalibrate_imu,0.000000,0.104666,0,degraded,100.000,1.156,44.000,IMU recalibrated (bias was negligible)
+8,22,0,shed_load:science_a,-0.150000,0.008914,0,degraded,100.000,0.956,42.500,science_a powered off
+8,23,21,query_power_level:battery,0.000000,0.003340,0,degraded,100.000,0.756,41.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+8,24,10,reconfigure_power:solar_a,-0.350000,0.034774,0,degraded,100.000,0.556,39.500,solar_a has no active fault to reconfigure
+8,25,3,shed_load:transponder,-0.150000,0.187987,0,degraded,100.000,0.356,38.000,transponder powered off
+8,26,15,recalibrate_star_tracker,-0.250000,0.082956,0,degraded,100.000,0.156,36.500,star tracker nominal; recalibration unnecessary
+8,27,4,restore_load:science_a,0.050000,4.843393,0,degraded,100.000,0.000,35.000,science_a restored
+8,28,22,query_power_level:solar_a,0.000000,0.076819,0,degraded,100.000,0.000,33.500,diag: solar_a output=90.0W health=1.00 (panel nominal)
+8,29,4,restore_load:science_a,-0.250000,1.071573,0,degraded,100.000,0.000,32.000,science_a already online
+8,30,27,diagnostic_scan:attitude,0.050000,0.129705,0,degraded,100.000,0.000,30.500,diag-scan attitude: mode=thruster err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+8,31,10,reconfigure_power:solar_a,-0.350000,0.506322,0,degraded,100.000,0.000,29.000,solar_a has no active fault to reconfigure
+8,32,16,cross_validate_attitude,-0.050000,0.129737,0,degraded,100.000,0.000,27.500,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+8,33,29,safe_mode,-0.250000,6.368711,0,degraded,100.000,0.000,26.000,safe mode engaged; non-essentials shed
+8,34,13,switch_to_thruster_control,-0.250000,0.172921,0,degraded,100.000,0.000,24.500,already in thruster mode
+8,35,8,switch_to_backup_battery,-0.050000,0.521884,0,degraded,100.000,0.000,23.000,switched to backup battery
+8,36,26,diagnostic_scan:power,0.050000,0.396066,0,degraded,100.000,0.000,21.500,diag-scan power: bat=100.0% solar=180.0W load=50.0W net=positive pcf=False
+8,37,11,reconfigure_power:solar_b,-0.350000,0.335555,0,degraded,100.000,0.000,20.000,solar_b has no active fault to reconfigure
+8,38,12,stabilize_attitude,-0.150000,0.555545,0,degraded,100.000,0.000,16.500,attitude stabilization burn; pointing error 0.00deg
+8,39,8,switch_to_backup_battery,-0.350000,0.048049,0,degraded,100.000,0.000,15.000,already on backup battery
+8,40,11,reconfigure_power:solar_b,-0.350000,0.185075,0,degraded,100.000,0.000,13.500,solar_b has no active fault to reconfigure
+8,41,7,restore_load:transponder,0.050000,0.030309,0,degraded,100.000,0.000,12.000,transponder restored
+8,42,10,reconfigure_power:solar_a,-0.350000,0.021227,0,degraded,100.000,0.000,10.500,solar_a has no active fault to reconfigure
+8,43,22,query_power_level:solar_a,0.000000,0.096884,0,degraded,100.000,0.000,9.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+8,44,18,switch_attitude_reference:gyro,-0.050000,0.248586,0,degraded,100.000,0.000,7.500,attitude reference set to gyro
+8,45,26,diagnostic_scan:power,0.050000,0.000494,0,degraded,100.000,0.000,6.000,diag-scan power: bat=100.0% solar=180.0W load=65.0W net=positive pcf=False
+8,46,1,shed_load:science_b,-0.250000,0.053490,0,degraded,100.000,0.000,4.500,science_b already offline
+8,47,17,switch_attitude_reference:star_tracker,-0.050000,1.865632,0,degraded,100.000,0.000,3.000,attitude reference set to star_tracker
+8,48,17,switch_attitude_reference:star_tracker,-0.050000,0.540967,0,degraded,100.000,0.000,1.500,attitude reference set to star_tracker
+8,49,12,stabilize_attitude,-0.800000,0.371816,0,critical,100.000,1.500,0.000,insufficient fuel to stabilize
+8,50,0,shed_load:science_a,-10.700000,95.707131,1,lost,100.000,3.000,0.000,science_a already offline
+9,1,22,query_power_level:solar_a,0.000000,0.000618,0,degraded,100.000,0.000,50.000,diag: solar_a output=18.6W health=0.21 (panel DEGRADED)
+9,2,23,query_power_level:solar_b,0.000000,0.002080,0,degraded,100.000,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+9,3,21,query_power_level:battery,0.000000,0.001441,0,degraded,100.000,0.000,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+9,4,26,diagnostic_scan:power,0.050000,0.021886,0,degraded,100.000,0.000,50.000,diag-scan power: bat=100.0% solar=108.6W load=105.0W net=positive pcf=False
+9,5,27,diagnostic_scan:attitude,0.050000,0.012101,0,degraded,100.000,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+9,6,28,diagnostic_scan:comms,0.050000,0.127139,0,degraded,100.000,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+9,7,25,query_thermal,0.000000,0.029419,0,degraded,100.000,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+9,8,16,cross_validate_attitude,-0.050000,0.009505,0,degraded,100.000,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+9,9,24,query_attitude,0.000000,0.011062,0,degraded,100.000,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+9,10,0,shed_load:science_a,-0.150000,1.270968,0,degraded,100.000,0.000,50.000,science_a powered off
+9,11,1,shed_load:science_b,-0.150000,0.011306,0,degraded,100.000,0.000,50.000,science_b powered off
+9,12,9,reset_power_controller,-0.250000,0.073023,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+9,13,10,reconfigure_power:solar_a,1.100000,0.721039,0,nominal,100.000,0.000,50.000,solar_a reconfigured successfully; fault cleared (health 0.21 -> 0.61)
+9,14,11,reconfigure_power:solar_b,-0.200000,0.016815,0,nominal,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+9,15,10,reconfigure_power:solar_a,-0.200000,0.092172,0,nominal,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+9,16,11,reconfigure_power:solar_b,-0.200000,0.000127,0,nominal,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+9,17,15,recalibrate_star_tracker,-0.100000,0.000001,0,nominal,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+9,18,14,desaturate_wheels,0.000000,0.031251,0,nominal,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+9,19,14,desaturate_wheels,0.000000,0.009512,0,nominal,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+9,20,20,recalibrate_imu,0.150000,0.031953,0,nominal,100.000,0.000,50.000,IMU recalibrated (bias was negligible)
+9,21,6,restore_load:heaters,-0.100000,0.003133,0,nominal,100.000,0.000,50.000,heaters already online
+9,22,3,shed_load:transponder,0.000000,0.144688,0,nominal,100.000,0.000,50.000,transponder powered off
+9,23,7,restore_load:transponder,0.200000,0.055239,0,nominal,100.000,0.000,50.000,transponder restored
+9,24,12,stabilize_attitude,0.000000,0.104616,0,nominal,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+9,25,12,stabilize_attitude,0.000000,0.031627,0,nominal,100.000,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+9,26,12,stabilize_attitude,0.000000,0.009670,0,nominal,100.000,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+9,27,24,query_attitude,0.150000,0.006838,0,nominal,100.000,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+9,28,25,query_thermal,0.150000,0.011794,0,nominal,100.000,0.000,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+9,29,21,query_power_level:battery,0.150000,0.003146,0,nominal,100.000,0.000,44.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+9,30,30,resume_nominal,10.000000,14.378353,1,recovered,100.000,0.000,44.000,nominal operations resumed; mission recovered
+10,1,24,query_attitude,0.000000,0.252198,0,degraded,100.000,0.000,50.000,diag: mode=nominal err=0.00deg rw=degraded ref=star_tracker st_bias=0.0 gyro_bias=1.0
+10,2,25,query_thermal,0.000000,0.204436,0,degraded,100.000,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+10,3,17,switch_attitude_reference:star_tracker,-0.050000,0.583741,0,degraded,100.000,0.000,50.000,attitude reference set to star_tracker
+10,4,19,switch_attitude_reference:sun_sensor,-0.050000,3.015717,0,degraded,100.000,0.150,50.000,attitude reference set to sun_sensor
+10,5,21,query_power_level:battery,0.000000,0.387636,0,degraded,100.000,0.300,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+10,6,19,switch_attitude_reference:sun_sensor,-0.050000,0.770810,0,degraded,100.000,0.450,50.000,attitude reference set to sun_sensor
+10,7,2,shed_load:heaters,-0.150000,0.760088,0,degraded,100.000,0.600,50.000,heaters powered off
+10,8,21,query_power_level:battery,0.000000,0.047860,0,degraded,100.000,0.750,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+10,9,20,recalibrate_imu,0.350000,0.498754,0,degraded,100.000,0.900,50.000,IMU recalibrated; gyro bias 1.20 cleared
+10,10,3,shed_load:transponder,-0.150000,0.288433,0,degraded,100.000,1.050,50.000,transponder powered off
+10,11,27,diagnostic_scan:attitude,0.050000,0.010120,0,degraded,100.000,1.200,50.000,diag-scan attitude: mode=nominal err=1.05deg rw_deg=0.69 st_fault=False ref=sun_sensor
+10,12,24,query_attitude,0.000000,0.012514,0,degraded,100.000,1.350,50.000,diag: mode=nominal err=1.20deg rw=degraded ref=sun_sensor st_bias=0.0 gyro_bias=0.1
+10,13,29,safe_mode,-0.250000,1.376009,0,degraded,100.000,0.500,50.000,safe mode engaged; non-essentials shed
+10,14,11,reconfigure_power:solar_b,-0.350000,0.008638,0,degraded,100.000,0.650,50.000,solar_b has no active fault to reconfigure
+10,15,4,restore_load:science_a,0.050000,0.950544,0,degraded,100.000,0.800,50.000,science_a restored
+10,16,17,switch_attitude_reference:star_tracker,-0.050000,0.287471,0,degraded,100.000,0.700,50.000,attitude reference set to star_tracker
+10,17,27,diagnostic_scan:attitude,0.050000,0.053736,0,degraded,100.000,0.600,50.000,diag-scan attitude: mode=nominal err=0.70deg rw_deg=0.81 st_fault=False ref=star_tracker
+10,18,13,switch_to_thruster_control,-0.050000,0.040592,0,degraded,100.000,0.400,48.500,ACS switched to thruster control
+10,19,0,shed_load:science_a,-0.150000,0.908672,0,degraded,100.000,0.200,47.000,science_a powered off
+10,20,20,recalibrate_imu,0.000000,0.200423,0,degraded,100.000,0.000,45.500,IMU recalibrated (bias was negligible)
+10,21,29,safe_mode,-0.250000,0.660358,0,degraded,100.000,0.000,44.000,safe mode engaged; non-essentials shed
+10,22,18,switch_attitude_reference:gyro,-0.050000,0.035081,0,degraded,100.000,0.000,42.500,attitude reference set to gyro
+10,23,26,diagnostic_scan:power,0.050000,0.184895,0,degraded,100.000,0.000,41.000,diag-scan power: bat=100.0% solar=180.0W load=50.0W net=positive pcf=False
+10,24,25,query_thermal,0.000000,0.121338,0,degraded,100.000,0.000,39.500,diag: battery_temp=20.0C heaters=offline thermal_fault=False
+10,25,22,query_power_level:solar_a,0.000000,0.138054,0,degraded,100.000,0.000,38.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+10,26,14,desaturate_wheels,0.150000,0.749616,0,degraded,100.000,0.000,32.500,wheels desaturated; degradation now 0.47
+10,27,21,query_power_level:battery,0.000000,0.268191,0,degraded,100.000,0.000,31.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+10,28,18,switch_attitude_reference:gyro,-0.050000,0.002210,0,degraded,100.000,0.000,29.500,attitude reference set to gyro
+10,29,7,restore_load:transponder,0.250000,0.654267,0,degraded,100.000,0.000,28.000,transponder power-cycled; link partially restored
+10,30,13,switch_to_thruster_control,-0.250000,0.303872,0,degraded,100.000,0.000,26.500,already in thruster mode
+10,31,2,shed_load:heaters,-0.250000,0.949559,0,degraded,100.000,0.000,25.000,heaters already offline
+10,32,6,restore_load:heaters,0.050000,1.182347,0,degraded,100.000,0.000,23.500,heaters restored
+10,33,20,recalibrate_imu,0.000000,0.125727,0,degraded,100.000,0.000,22.000,IMU recalibrated (bias was negligible)
+10,34,0,shed_load:science_a,-0.250000,2.157173,0,degraded,100.000,0.000,20.500,science_a already offline
+10,35,21,query_power_level:battery,0.000000,0.370002,0,degraded,100.000,0.000,19.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+10,36,30,resume_nominal,-0.550000,0.953673,0,degraded,100.000,0.000,17.500,refused: 2 unresolved fault(s) - resolve before resuming nominal
+10,37,6,restore_load:heaters,-0.250000,0.001798,0,degraded,100.000,0.000,16.000,heaters already online
+10,38,4,restore_load:science_a,0.050000,1.619137,0,degraded,100.000,0.000,14.500,science_a restored
+10,39,8,switch_to_backup_battery,-0.050000,0.744543,0,degraded,100.000,0.000,13.000,switched to backup battery
+10,40,7,restore_load:transponder,-0.250000,0.261457,0,degraded,100.000,0.000,11.500,transponder already online
+10,41,23,query_power_level:solar_b,0.000000,0.602054,0,degraded,100.000,0.000,10.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+10,42,1,shed_load:science_b,-0.250000,0.483238,0,degraded,100.000,0.000,8.500,science_b already offline
+10,43,23,query_power_level:solar_b,0.000000,0.160903,0,degraded,100.000,0.000,7.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+10,44,27,diagnostic_scan:attitude,0.050000,0.277168,0,degraded,100.000,0.000,5.500,diag-scan attitude: mode=thruster err=0.00deg rw_deg=0.47 st_fault=False ref=gyro
+10,45,24,query_attitude,0.000000,0.105666,0,degraded,100.000,0.000,4.000,diag: mode=thruster err=0.00deg rw=failed ref=gyro st_bias=0.0 gyro_bias=0.0
+10,46,20,recalibrate_imu,0.000000,0.002038,0,degraded,100.000,0.000,2.500,IMU recalibrated (bias was negligible)
+10,47,15,recalibrate_star_tracker,-0.250000,0.140333,0,degraded,100.000,0.000,1.000,star tracker nominal; recalibration unnecessary
+10,48,29,safe_mode,-10.200000,63.843073,1,lost,100.000,1.500,0.000,safe mode engaged; non-essentials shed
+11,1,22,query_power_level:solar_a,0.000000,0.137365,0,degraded,62.980,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+11,2,23,query_power_level:solar_b,0.000000,0.001121,0,degraded,62.980,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+11,3,21,query_power_level:battery,0.000000,0.037354,0,degraded,62.980,0.000,50.000,diag: battery_pct=63.0% health=0.63 backup=False pcf=True
+11,4,26,diagnostic_scan:power,0.050000,0.040896,0,degraded,62.980,0.000,50.000,diag-scan power: bat=63.0% solar=180.0W load=105.0W net=positive pcf=True
+11,5,27,diagnostic_scan:attitude,0.050000,0.000696,0,degraded,62.980,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.57 st_fault=False ref=star_tracker
+11,6,28,diagnostic_scan:comms,0.050000,0.398342,0,degraded,62.980,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+11,7,25,query_thermal,0.000000,0.039738,0,degraded,62.980,0.000,50.000,diag: battery_temp=6.8C heaters=offline thermal_fault=True
+11,8,16,cross_validate_attitude,-0.050000,0.151252,0,degraded,62.980,0.000,50.000,diag: ST=0.00deg GY=1.17deg SUN=0.00deg disagree=0.00
+11,9,24,query_attitude,0.000000,0.000157,0,degraded,62.980,0.000,50.000,diag: mode=nominal err=0.00deg rw=degraded ref=star_tracker st_bias=0.0 gyro_bias=1.2
+11,10,0,shed_load:science_a,0.250000,0.056729,0,degraded,62.980,0.000,50.000,science_a powered off
+11,11,1,shed_load:science_b,0.250000,0.110745,0,degraded,62.980,0.000,50.000,science_b powered off
+11,12,9,reset_power_controller,0.750000,0.809668,0,degraded,62.980,0.000,50.000,power controller reset; drain fault cleared
+11,13,10,reconfigure_power:solar_a,-0.350000,0.009525,0,degraded,62.980,0.000,50.000,solar_a has no active fault to reconfigure
+11,14,11,reconfigure_power:solar_b,-0.350000,0.027746,0,degraded,62.980,0.000,50.000,solar_b has no active fault to reconfigure
+11,15,10,reconfigure_power:solar_a,-0.800000,0.186265,0,critical,62.980,0.000,50.000,solar_a has no active fault to reconfigure
+11,16,11,reconfigure_power:solar_b,-0.800000,0.008468,0,critical,61.980,0.000,50.000,solar_b has no active fault to reconfigure
+11,17,15,recalibrate_star_tracker,-0.700000,0.006929,0,critical,60.980,0.000,50.000,star tracker nominal; recalibration unnecessary
+11,18,14,desaturate_wheels,0.000000,0.204038,0,critical,59.980,0.000,46.000,wheels desaturated; rw_fault cleared (degradation 0.33)
+11,19,14,desaturate_wheels,-0.300000,0.000374,0,critical,58.980,0.000,42.000,wheels desaturated; degradation now 0.00
+11,20,20,recalibrate_imu,-0.100000,0.000557,0,critical,57.980,0.000,42.000,IMU recalibrated; gyro bias 1.56 cleared
+11,21,6,restore_load:heaters,-0.400000,0.066588,0,critical,56.980,0.000,42.000,heaters restored
+11,22,3,shed_load:transponder,-0.200000,0.108713,0,critical,55.980,0.000,42.000,transponder powered off
+11,23,7,restore_load:transponder,-0.400000,0.000320,0,critical,54.980,0.000,42.000,transponder restored
+11,24,12,stabilize_attitude,-0.600000,0.113883,0,critical,53.980,0.000,40.000,attitude stabilization burn; pointing error 0.00deg
+11,25,12,stabilize_attitude,-0.600000,0.037212,0,critical,52.980,0.000,38.000,attitude stabilization burn; pointing error 0.00deg
+11,26,12,stabilize_attitude,-0.600000,0.012275,0,critical,51.980,0.000,36.000,attitude stabilization burn; pointing error 0.00deg
+11,27,24,query_attitude,-0.450000,0.028144,0,critical,50.980,0.000,36.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+11,28,25,query_thermal,-0.450000,0.027794,0,critical,49.980,0.000,36.000,diag: battery_temp=-1.9C heaters=online thermal_fault=True
+11,29,21,query_power_level:battery,-0.450000,0.012858,0,critical,48.980,0.000,36.000,diag: battery_pct=50.0% health=0.49 backup=False pcf=False
+11,30,30,resume_nominal,-1.000000,1.609012,0,critical,47.980,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+11,31,30,resume_nominal,-1.000000,0.335654,0,critical,46.980,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+11,32,30,resume_nominal,-1.000000,0.099500,0,critical,45.980,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+11,33,30,resume_nominal,-1.000000,0.029478,0,critical,44.980,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+11,34,24,query_attitude,0.000000,0.012790,0,degraded,43.980,0.000,36.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+11,35,1,shed_load:science_b,-0.250000,0.009747,0,degraded,43.980,0.000,36.000,science_b already offline
+11,36,11,reconfigure_power:solar_b,-0.350000,0.079564,0,degraded,43.980,0.000,36.000,solar_b has no active fault to reconfigure
+11,37,14,desaturate_wheels,-0.150000,0.006587,0,degraded,43.980,0.000,36.000,wheels already nominal; desaturation unnecessary
+11,38,27,diagnostic_scan:attitude,0.050000,0.165968,0,degraded,43.980,0.000,36.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+11,39,2,shed_load:heaters,0.250000,0.360619,0,degraded,43.980,0.000,36.000,WARNING: heaters powered off while battery_temp_c is very low (1.4C)
+11,40,20,recalibrate_imu,-0.450000,0.294225,0,critical,43.980,0.000,36.000,IMU recalibrated (bias was negligible)
+11,41,3,shed_load:transponder,-0.200000,0.023281,0,critical,42.980,0.000,36.000,transponder powered off
+11,42,2,shed_load:heaters,-0.700000,0.294543,0,critical,41.980,0.000,36.000,heaters already offline
+11,43,18,switch_attitude_reference:gyro,-0.500000,0.126237,0,critical,40.980,0.000,36.000,attitude reference set to gyro
+11,44,2,shed_load:heaters,-0.700000,0.125113,0,critical,39.980,0.000,36.000,heaters already offline
+11,45,7,restore_load:transponder,-0.400000,0.043230,0,critical,38.980,0.000,36.000,transponder restored
+11,46,27,diagnostic_scan:attitude,-0.400000,0.001293,0,critical,37.980,0.000,36.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=gyro
+11,47,30,resume_nominal,-1.000000,0.178485,0,critical,36.980,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+11,48,23,query_power_level:solar_b,-0.450000,0.003180,0,critical,35.980,0.000,36.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+11,49,1,shed_load:science_b,-0.700000,0.035837,0,critical,34.980,0.000,36.000,science_b already offline
+11,50,30,resume_nominal,-11.000000,102.282533,1,lost,33.980,0.000,36.000,refused: 1 unresolved fault(s) - resolve before resuming nominal
+12,1,22,query_power_level:solar_a,0.000000,0.009204,0,degraded,100.000,0.000,50.000,diag: solar_a output=22.4W health=0.25 (panel DEGRADED)
+12,2,23,query_power_level:solar_b,0.000000,0.012994,0,degraded,100.000,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+12,3,21,query_power_level:battery,0.000000,0.036888,0,degraded,100.000,0.000,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+12,4,26,diagnostic_scan:power,0.050000,0.003972,0,degraded,100.000,0.000,50.000,diag-scan power: bat=100.0% solar=112.4W load=105.0W net=positive pcf=False
+12,5,27,diagnostic_scan:attitude,0.050000,0.027529,0,degraded,100.000,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+12,6,28,diagnostic_scan:comms,0.050000,0.063713,0,degraded,100.000,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+12,7,25,query_thermal,0.000000,0.001297,0,degraded,100.000,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+12,8,16,cross_validate_attitude,-0.050000,0.021117,0,degraded,100.000,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+12,9,24,query_attitude,0.000000,0.039736,0,degraded,100.000,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+12,10,0,shed_load:science_a,-0.150000,0.002063,0,degraded,100.000,0.000,50.000,science_a powered off
+12,11,1,shed_load:science_b,-0.150000,0.006326,0,degraded,100.000,0.000,50.000,science_b powered off
+12,12,9,reset_power_controller,-0.250000,0.021739,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+12,13,10,reconfigure_power:solar_a,1.100000,1.312428,0,nominal,100.000,0.000,50.000,solar_a reconfigured successfully; fault cleared (health 0.25 -> 0.65)
+12,14,11,reconfigure_power:solar_b,-0.200000,0.055641,0,nominal,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+12,15,10,reconfigure_power:solar_a,-0.200000,0.027668,0,nominal,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+12,16,11,reconfigure_power:solar_b,-0.200000,0.017543,0,nominal,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+12,17,15,recalibrate_star_tracker,-0.100000,0.062221,0,nominal,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+12,18,14,desaturate_wheels,0.000000,0.001548,0,nominal,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+12,19,14,desaturate_wheels,0.000000,0.000460,0,nominal,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+12,20,20,recalibrate_imu,0.150000,0.041625,0,nominal,100.000,0.000,50.000,IMU recalibrated (bias was negligible)
+12,21,6,restore_load:heaters,-0.100000,0.006961,0,nominal,100.000,0.000,50.000,heaters already online
+12,22,3,shed_load:transponder,0.000000,0.048399,0,nominal,100.000,0.000,50.000,transponder powered off
+12,23,7,restore_load:transponder,0.200000,0.046933,0,nominal,100.000,0.000,50.000,transponder restored
+12,24,12,stabilize_attitude,0.000000,0.021388,0,nominal,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+12,25,12,stabilize_attitude,0.000000,0.006484,0,nominal,100.000,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+12,26,12,stabilize_attitude,0.000000,0.002002,0,nominal,100.000,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+12,27,24,query_attitude,0.150000,0.001890,0,nominal,100.000,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+12,28,25,query_thermal,0.150000,0.000868,0,nominal,100.000,0.000,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+12,29,21,query_power_level:battery,0.150000,0.003882,0,nominal,100.000,0.000,44.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+12,30,30,resume_nominal,10.000000,24.172136,1,recovered,100.000,0.000,44.000,nominal operations resumed; mission recovered
+13,1,26,diagnostic_scan:power,0.050000,0.036666,0,degraded,99.210,5.590,50.000,diag-scan power: bat=100.0% solar=81.3W load=105.0W net=negative pcf=False
+13,2,8,switch_to_backup_battery,-0.050000,0.103654,0,degraded,99.100,6.190,50.000,switched to backup battery
+13,3,22,query_power_level:solar_a,0.000000,0.000671,0,degraded,98.090,6.790,50.000,diag: solar_a output=12.6W health=0.20 (panel DEGRADED)
+13,4,24,query_attitude,0.000000,0.017306,0,degraded,96.980,7.390,50.000,diag: mode=nominal err=6.79deg rw=nominal ref=star_tracker st_bias=5.0 gyro_bias=0.0
+13,5,7,restore_load:transponder,-0.150000,0.082378,0,degraded,95.750,7.990,50.000,comms fault active - power cycle required: shed_load then restore_load
+13,6,10,reconfigure_power:solar_a,0.950000,1.175796,0,degraded,95.140,8.590,50.000,solar_a reconfigured successfully; fault cleared (health 0.20 -> 0.60)
+13,7,30,resume_nominal,-0.550000,0.396030,0,degraded,94.390,9.190,50.000,refused: 2 unresolved fault(s) - resolve before resuming nominal
+13,8,23,query_power_level:solar_b,0.000000,0.044579,0,degraded,93.490,9.790,50.000,diag: solar_b output=48.6W health=1.00 (panel nominal)
+13,9,18,switch_attitude_reference:gyro,-0.050000,0.099412,0,degraded,92.440,9.740,50.000,attitude reference set to gyro
+13,10,20,recalibrate_imu,0.000000,0.125474,0,degraded,91.410,9.690,50.000,IMU recalibrated (bias was negligible)
+13,11,10,reconfigure_power:solar_a,-0.350000,0.120844,0,degraded,90.390,9.640,50.000,solar_a has no active fault to reconfigure
+13,12,12,stabilize_attitude,0.250000,0.470213,0,degraded,89.980,7.090,48.000,attitude stabilization burn; pointing error 7.14deg
+13,13,15,recalibrate_star_tracker,0.250000,0.126559,0,degraded,89.830,6.040,48.000,star tracker recalibrated; bias removed
+13,14,14,desaturate_wheels,-0.150000,0.100067,0,degraded,89.690,5.990,48.000,wheels already nominal; desaturation unnecessary
+13,15,4,restore_load:science_a,-0.250000,0.275137,0,degraded,89.560,5.940,48.000,science_a already online
+13,16,28,diagnostic_scan:comms,0.050000,0.084105,0,degraded,89.440,5.890,48.000,diag-scan comms: transponder=online signal=8.0dB comms_fault=True pending_cycle=False
+13,17,22,query_power_level:solar_a,0.000000,0.000050,0,degraded,89.330,5.840,48.000,diag: solar_a output=38.3W health=0.60 (panel nominal)
+13,18,25,query_thermal,0.000000,0.002278,0,degraded,89.240,5.790,48.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+13,19,29,safe_mode,-0.250000,5.783337,0,degraded,91.560,4.740,48.000,safe mode engaged; non-essentials shed
+13,20,2,shed_load:heaters,-0.150000,0.193660,0,degraded,93.900,4.690,48.000,heaters powered off
+13,21,27,diagnostic_scan:attitude,0.050000,0.209982,0,degraded,96.250,4.640,48.000,diag-scan attitude: mode=nominal err=4.69deg rw_deg=0.00 st_fault=False ref=gyro
+13,22,23,query_power_level:solar_b,0.000000,0.164530,0,degraded,98.610,4.590,48.000,diag: solar_b output=69.1W health=1.00 (panel nominal)
+13,23,14,desaturate_wheels,-0.150000,0.164874,0,degraded,100.000,4.540,48.000,wheels already nominal; desaturation unnecessary
+13,24,7,restore_load:transponder,0.050000,0.107211,0,degraded,100.000,4.490,48.000,transponder restored
+13,25,20,recalibrate_imu,0.000000,0.005939,0,degraded,100.000,4.440,48.000,IMU recalibrated (bias was negligible)
+13,26,10,reconfigure_power:solar_a,-0.350000,0.150484,0,degraded,100.000,4.390,48.000,solar_a has no active fault to reconfigure
+13,27,7,restore_load:transponder,-0.150000,0.002281,0,degraded,100.000,4.340,48.000,comms fault active - power cycle required: shed_load then restore_load
+13,28,20,recalibrate_imu,0.000000,0.003041,0,degraded,100.000,4.290,48.000,IMU recalibrated (bias was negligible)
+13,29,10,reconfigure_power:solar_a,-0.350000,0.060401,0,degraded,100.000,4.240,48.000,solar_a has no active fault to reconfigure
+13,30,1,shed_load:science_b,-0.250000,0.008845,0,degraded,100.000,4.190,48.000,science_b already offline
+13,31,14,desaturate_wheels,-0.150000,0.035222,0,degraded,100.000,4.140,48.000,wheels already nominal; desaturation unnecessary
+13,32,4,restore_load:science_a,0.050000,0.253466,0,degraded,100.000,4.090,48.000,science_a restored
+13,33,4,restore_load:science_a,-0.250000,0.002143,0,degraded,100.000,4.040,48.000,science_a already online
+13,34,13,switch_to_thruster_control,-0.050000,0.040634,0,degraded,100.000,3.840,46.500,ACS switched to thruster control
+13,35,0,shed_load:science_a,-0.150000,0.020496,0,degraded,100.000,3.640,45.000,science_a powered off
+13,36,26,diagnostic_scan:power,0.050000,0.044635,0,degraded,100.000,3.440,43.500,diag-scan power: bat=100.0% solar=118.0W load=65.0W net=positive pcf=False
+13,37,25,query_thermal,0.000000,0.007740,0,degraded,100.000,3.240,42.000,diag: battery_temp=20.0C heaters=offline thermal_fault=False
+13,38,15,recalibrate_star_tracker,-0.250000,0.053113,0,degraded,100.000,3.040,40.500,star tracker nominal; recalibration unnecessary
+13,39,14,desaturate_wheels,-0.150000,0.002484,0,degraded,100.000,2.840,39.000,wheels already nominal; desaturation unnecessary
+13,40,3,shed_load:transponder,-0.150000,0.179620,0,degraded,100.000,2.640,37.500,transponder powered off
+13,41,16,cross_validate_attitude,-0.050000,0.485849,0,degraded,100.000,2.440,36.000,diag: ST=2.64deg GY=2.64deg SUN=2.64deg disagree=0.00
+13,42,28,diagnostic_scan:comms,0.050000,0.350151,0,degraded,100.000,2.240,34.500,diag-scan comms: transponder=offline signal=0.0dB comms_fault=True pending_cycle=True
+13,43,29,safe_mode,-0.250000,1.245112,0,degraded,100.000,1.040,33.000,safe mode engaged; non-essentials shed
+13,44,15,recalibrate_star_tracker,-0.250000,0.084916,0,degraded,100.000,0.840,31.500,star tracker nominal; recalibration unnecessary
+13,45,3,shed_load:transponder,-0.250000,0.180279,0,degraded,100.000,0.640,30.000,transponder already offline
+13,46,6,restore_load:heaters,0.050000,0.776168,0,degraded,100.000,0.440,28.500,heaters restored
+13,47,7,restore_load:transponder,0.850000,0.475156,0,degraded,100.000,0.240,27.000,transponder power-cycled; comms fault cleared
+13,48,6,restore_load:heaters,-0.250000,0.123004,0,degraded,100.000,0.040,25.500,heaters already online
+13,49,3,shed_load:transponder,-0.150000,0.000764,0,degraded,100.000,0.000,24.000,transponder powered off
+13,50,13,switch_to_thruster_control,-10.250000,94.999781,1,lost,100.000,0.000,22.500,already in thruster mode
+14,1,23,query_power_level:solar_b,0.000000,0.000050,0,degraded,42.630,0.000,50.000,diag: solar_b output=27.4W health=0.30 (panel DEGRADED)
+14,2,23,query_power_level:solar_b,0.000000,0.035741,0,degraded,42.210,0.000,50.000,diag: solar_b output=27.4W health=0.30 (panel DEGRADED)
+14,3,27,diagnostic_scan:attitude,0.050000,0.023167,0,degraded,41.790,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+14,4,16,cross_validate_attitude,-0.050000,0.007685,0,degraded,41.370,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+14,5,4,restore_load:science_a,-0.250000,0.079002,0,degraded,40.950,0.000,50.000,science_a already online
+14,6,25,query_thermal,0.000000,0.050597,0,degraded,40.530,0.000,50.000,diag: battery_temp=7.7C heaters=offline thermal_fault=True
+14,7,16,cross_validate_attitude,-0.050000,0.002347,0,degraded,40.110,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+14,8,11,reconfigure_power:solar_b,0.950000,1.144499,0,degraded,40.890,0.000,50.000,solar_b reconfigured successfully; fault cleared (health 0.30 -> 0.70)
+14,9,29,safe_mode,-0.250000,3.746185,0,degraded,43.050,0.000,50.000,safe mode engaged; non-essentials shed
+14,10,8,switch_to_backup_battery,0.450000,1.088438,0,degraded,100.000,0.000,50.000,switched to backup battery
+14,11,4,restore_load:science_a,0.050000,0.170964,0,degraded,100.000,0.000,50.000,science_a restored
+14,12,16,cross_validate_attitude,-0.050000,0.198428,0,degraded,100.000,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+14,13,22,query_power_level:solar_a,0.000000,0.123280,0,degraded,100.000,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+14,14,19,switch_attitude_reference:sun_sensor,-0.050000,1.278776,0,degraded,100.000,0.150,50.000,attitude reference set to sun_sensor
+14,15,2,shed_load:heaters,-0.700000,0.007695,0,critical,100.000,0.300,50.000,heaters already offline
+14,16,23,query_power_level:solar_b,-0.450000,0.058918,0,critical,100.000,0.450,50.000,diag: solar_b output=62.5W health=0.70 (panel nominal)
+14,17,8,switch_to_backup_battery,-0.800000,0.240515,0,critical,100.000,0.600,50.000,already on backup battery
+14,18,4,restore_load:science_a,-0.700000,0.089126,0,critical,100.000,0.750,50.000,science_a already online
+14,19,22,query_power_level:solar_a,-0.450000,0.007481,0,critical,100.000,0.900,50.000,diag: solar_a output=86.6W health=1.00 (panel nominal)
+14,20,6,restore_load:heaters,-0.400000,0.237234,0,critical,100.000,1.050,50.000,heaters restored
+14,21,6,restore_load:heaters,-0.700000,0.002345,0,critical,100.000,1.200,50.000,heaters already online
+14,22,22,query_power_level:solar_a,-0.450000,0.018898,0,critical,100.000,1.350,50.000,diag: solar_a output=84.6W health=1.00 (panel nominal)
+14,23,13,switch_to_thruster_control,-0.500000,2.064393,0,critical,100.000,1.150,48.500,ACS switched to thruster control
+14,24,29,safe_mode,0.000000,0.893565,0,critical,100.000,0.000,47.000,safe mode engaged; non-essentials shed
+14,25,25,query_thermal,-0.450000,0.366585,0,critical,100.000,0.000,45.500,diag: battery_temp=-1.8C heaters=online thermal_fault=True
+14,26,9,reset_power_controller,-0.300000,0.697455,0,critical,100.000,0.000,44.000,power controller reset; bus stabilized
+14,27,27,diagnostic_scan:attitude,-0.400000,0.277076,0,critical,100.000,0.000,42.500,diag-scan attitude: mode=thruster err=0.00deg rw_deg=0.00 st_fault=False ref=sun_sensor
+14,28,7,restore_load:transponder,-0.400000,0.191082,0,critical,100.000,0.000,41.000,transponder restored
+14,29,29,safe_mode,0.000000,2.578133,0,critical,100.000,0.000,39.500,safe mode engaged; non-essentials shed
+14,30,4,restore_load:science_a,0.050000,0.177515,0,degraded,100.000,0.000,38.000,science_a restored
+14,31,8,switch_to_backup_battery,-0.350000,0.002127,0,degraded,100.000,0.000,36.500,already on backup battery
+14,32,18,switch_attitude_reference:gyro,-0.050000,0.128899,0,degraded,100.000,0.000,35.000,attitude reference set to gyro
+14,33,11,reconfigure_power:solar_b,-0.350000,0.041591,0,degraded,100.000,0.000,33.500,solar_b has no active fault to reconfigure
+14,34,22,query_power_level:solar_a,0.000000,0.070073,0,degraded,100.000,0.000,32.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+14,35,19,switch_attitude_reference:sun_sensor,-0.050000,0.465255,0,degraded,100.000,0.000,30.500,attitude reference set to sun_sensor
+14,36,11,reconfigure_power:solar_b,-0.350000,0.018262,0,degraded,100.000,0.000,29.000,solar_b has no active fault to reconfigure
+14,37,14,desaturate_wheels,-0.150000,0.419694,0,degraded,100.000,0.000,27.500,wheels already nominal; desaturation unnecessary
+14,38,7,restore_load:transponder,0.050000,0.016596,0,degraded,100.000,0.000,26.000,transponder restored
+14,39,22,query_power_level:solar_a,0.000000,0.000253,0,degraded,100.000,0.000,24.500,diag: solar_a output=90.0W health=1.00 (panel nominal)
+14,40,26,diagnostic_scan:power,0.050000,0.000286,0,degraded,100.000,0.000,23.000,diag-scan power: bat=100.0% solar=153.4W load=110.0W net=positive pcf=False
+14,41,10,reconfigure_power:solar_a,-0.350000,0.008408,0,degraded,100.000,0.000,21.500,solar_a has no active fault to reconfigure
+14,42,27,diagnostic_scan:attitude,0.050000,0.005795,0,degraded,100.000,0.000,20.000,diag-scan attitude: mode=thruster err=0.00deg rw_deg=0.00 st_fault=False ref=sun_sensor
+14,43,24,query_attitude,0.000000,0.000136,0,degraded,100.000,0.000,18.500,diag: mode=thruster err=0.00deg rw=nominal ref=sun_sensor st_bias=0.0 gyro_bias=0.0
+14,44,9,reset_power_controller,-0.250000,0.027301,0,degraded,100.000,0.000,17.000,power controller nominal; reset had no effect
+14,45,30,resume_nominal,-0.550000,0.075855,0,degraded,100.000,0.000,15.500,refused: 2 unresolved fault(s) - resolve before resuming nominal
+14,46,14,desaturate_wheels,-0.150000,0.027413,0,degraded,100.000,0.000,14.000,wheels already nominal; desaturation unnecessary
+14,47,16,cross_validate_attitude,-0.050000,0.030070,0,degraded,100.000,0.000,12.500,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+14,48,4,restore_load:science_a,-0.250000,0.044856,0,degraded,100.000,0.000,11.000,science_a already online
+14,49,30,resume_nominal,-0.550000,0.020178,0,degraded,100.000,0.000,9.500,refused: 2 unresolved fault(s) - resolve before resuming nominal
+14,50,19,switch_attitude_reference:sun_sensor,-10.050000,98.288850,1,lost,100.000,0.000,8.000,attitude reference set to sun_sensor
+15,1,22,query_power_level:solar_a,0.000000,0.005033,0,degraded,100.000,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+15,2,23,query_power_level:solar_b,0.000000,0.014324,0,degraded,100.000,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+15,3,21,query_power_level:battery,0.000000,0.002036,0,degraded,100.000,0.000,50.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+15,4,26,diagnostic_scan:power,0.050000,0.001965,0,degraded,100.000,0.000,50.000,diag-scan power: bat=100.0% solar=180.0W load=105.0W net=positive pcf=False
+15,5,27,diagnostic_scan:attitude,0.050000,0.029902,0,degraded,100.000,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.69 st_fault=False ref=star_tracker
+15,6,28,diagnostic_scan:comms,0.050000,0.001132,0,degraded,100.000,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+15,7,25,query_thermal,0.000000,0.042371,0,degraded,100.000,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+15,8,16,cross_validate_attitude,-0.050000,0.022291,0,degraded,100.000,0.000,50.000,diag: ST=0.00deg GY=1.45deg SUN=0.00deg disagree=0.00
+15,9,24,query_attitude,0.000000,0.006973,0,degraded,100.000,0.000,50.000,diag: mode=nominal err=0.00deg rw=degraded ref=star_tracker st_bias=0.0 gyro_bias=1.5
+15,10,0,shed_load:science_a,-0.150000,0.000005,0,degraded,100.000,0.000,50.000,science_a powered off
+15,11,1,shed_load:science_b,-0.150000,0.016079,0,degraded,100.000,0.000,50.000,science_b powered off
+15,12,9,reset_power_controller,-0.250000,0.000658,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+15,13,10,reconfigure_power:solar_a,-0.350000,0.008753,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+15,14,11,reconfigure_power:solar_b,-0.350000,0.188848,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+15,15,10,reconfigure_power:solar_a,-0.350000,0.018480,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+15,16,11,reconfigure_power:solar_b,-0.350000,0.099891,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+15,17,15,recalibrate_star_tracker,-0.250000,0.002877,0,degraded,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+15,18,14,desaturate_wheels,0.150000,0.009494,0,degraded,100.000,0.000,46.000,wheels desaturated; degradation now 0.45
+15,19,14,desaturate_wheels,0.600000,0.222228,0,nominal,100.000,0.000,42.000,wheels desaturated; rw_fault cleared (degradation 0.00)
+15,20,20,recalibrate_imu,0.500000,0.252562,0,nominal,100.000,0.000,42.000,IMU recalibrated; gyro bias 1.91 cleared
+15,21,6,restore_load:heaters,-0.100000,0.000481,0,nominal,100.000,0.000,42.000,heaters already online
+15,22,3,shed_load:transponder,0.000000,0.005151,0,nominal,100.000,0.000,42.000,transponder powered off
+15,23,7,restore_load:transponder,0.200000,0.158944,0,nominal,100.000,0.000,42.000,transponder restored
+15,24,12,stabilize_attitude,0.000000,0.001250,0,nominal,100.000,0.000,40.000,attitude stabilization burn; pointing error 0.00deg
+15,25,12,stabilize_attitude,0.000000,0.000412,0,nominal,100.000,0.000,38.000,attitude stabilization burn; pointing error 0.00deg
+15,26,12,stabilize_attitude,0.000000,0.000150,0,nominal,100.000,0.000,36.000,attitude stabilization burn; pointing error 0.00deg
+15,27,24,query_attitude,0.150000,0.217985,0,nominal,100.000,0.000,36.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+15,28,25,query_thermal,0.150000,0.066384,0,nominal,100.000,0.000,36.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+15,29,21,query_power_level:battery,0.150000,0.141677,0,nominal,100.000,0.000,36.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+15,30,30,resume_nominal,10.000000,8.174001,1,recovered,100.000,0.000,36.000,nominal operations resumed; mission recovered
+16,1,22,query_power_level:solar_a,0.000000,0.345201,0,degraded,99.670,0.000,50.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+16,2,23,query_power_level:solar_b,0.000000,0.347772,0,degraded,99.340,0.000,50.000,diag: solar_b output=5.1W health=0.06 (panel DEGRADED)
+16,3,21,query_power_level:battery,0.000000,0.254671,0,degraded,99.010,0.000,50.000,diag: battery_pct=99.3% health=1.00 backup=False pcf=False
+16,4,26,diagnostic_scan:power,0.050000,0.415777,0,degraded,98.690,0.000,50.000,diag-scan power: bat=99.0% solar=95.1W load=105.0W net=negative pcf=False
+16,5,27,diagnostic_scan:attitude,0.050000,0.307664,0,degraded,98.360,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+16,6,28,diagnostic_scan:comms,0.050000,0.443846,0,degraded,98.030,0.000,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+16,7,25,query_thermal,0.000000,0.207700,0,degraded,97.700,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+16,8,16,cross_validate_attitude,-0.050000,0.381564,0,degraded,97.370,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+16,9,24,query_attitude,0.000000,0.227566,0,degraded,97.040,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+16,10,0,shed_load:science_a,-0.150000,0.384183,0,degraded,97.550,0.000,50.000,science_a powered off
+16,11,1,shed_load:science_b,-0.150000,0.397276,0,degraded,98.880,0.000,50.000,science_b powered off
+16,12,9,reset_power_controller,-0.250000,0.308527,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+16,13,10,reconfigure_power:solar_a,-0.350000,0.323689,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+16,14,11,reconfigure_power:solar_b,0.250000,0.892355,0,degraded,100.000,0.000,50.000,solar_b partially reconfigured (health 0.06 -> 0.46); repeat reconfigure may be needed
+16,15,10,reconfigure_power:solar_a,-0.350000,0.110880,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+16,16,11,reconfigure_power:solar_b,1.100000,3.210864,0,nominal,100.000,0.000,50.000,solar_b reconfigured successfully; fault cleared (health 0.46 -> 0.86)
+16,17,15,recalibrate_star_tracker,-0.100000,2.271139,0,nominal,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+16,18,14,desaturate_wheels,0.000000,1.166724,0,nominal,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+16,19,14,desaturate_wheels,0.000000,0.341544,0,nominal,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+16,20,20,recalibrate_imu,0.150000,1.627925,0,nominal,100.000,0.000,50.000,IMU recalibrated (bias was negligible)
+16,21,6,restore_load:heaters,-0.100000,1.529730,0,nominal,100.000,0.000,50.000,heaters already online
+16,22,3,shed_load:transponder,0.000000,0.303326,0,nominal,100.000,0.000,50.000,transponder powered off
+16,23,7,restore_load:transponder,0.200000,2.241064,0,nominal,100.000,0.000,50.000,transponder restored
+16,24,12,stabilize_attitude,0.000000,1.552053,0,nominal,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+16,25,12,stabilize_attitude,0.000000,0.451064,0,nominal,100.000,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+16,26,12,stabilize_attitude,0.000000,0.132724,0,nominal,100.000,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+16,27,24,query_attitude,0.150000,1.943804,0,nominal,100.000,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+16,28,25,query_thermal,0.150000,1.602165,0,nominal,100.000,0.000,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+16,29,21,query_power_level:battery,0.150000,1.715565,0,nominal,100.000,0.000,44.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+16,30,30,resume_nominal,10.000000,2.106604,1,recovered,100.000,0.000,44.000,nominal operations resumed; mission recovered
+17,1,22,query_power_level:solar_a,0.000000,0.311865,0,degraded,99.670,0.000,50.000,diag: solar_a output=5.0W health=0.06 (panel DEGRADED)
+17,2,23,query_power_level:solar_b,0.000000,0.312860,0,degraded,99.330,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+17,3,21,query_power_level:battery,0.000000,0.036564,0,degraded,99.000,0.000,50.000,diag: battery_pct=99.3% health=1.00 backup=False pcf=False
+17,4,26,diagnostic_scan:power,0.050000,0.422209,0,degraded,98.660,0.000,50.000,diag-scan power: bat=99.0% solar=95.0W load=105.0W net=negative pcf=False
+17,5,27,diagnostic_scan:attitude,0.050000,0.258050,0,degraded,98.330,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+17,6,28,diagnostic_scan:comms,0.050000,0.340144,0,degraded,97.990,0.000,50.000,diag-scan comms: transponder=online signal=8.0dB comms_fault=True pending_cycle=False
+17,7,25,query_thermal,0.000000,0.023795,0,degraded,97.660,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+17,8,16,cross_validate_attitude,-0.050000,0.394793,0,degraded,97.320,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+17,9,24,query_attitude,0.000000,0.052731,0,degraded,96.990,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+17,10,0,shed_load:science_a,-0.150000,0.173751,0,degraded,97.490,0.000,50.000,science_a powered off
+17,11,1,shed_load:science_b,-0.150000,0.379439,0,degraded,98.820,0.000,50.000,science_b powered off
+17,12,9,reset_power_controller,-0.250000,0.404064,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+17,13,10,reconfigure_power:solar_a,0.250000,1.117408,0,degraded,100.000,0.000,50.000,solar_a partially reconfigured (health 0.06 -> 0.46); repeat reconfigure may be needed
+17,14,11,reconfigure_power:solar_b,-0.350000,0.076428,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+17,15,10,reconfigure_power:solar_a,0.950000,1.380397,0,degraded,100.000,0.000,50.000,solar_a reconfigured successfully; fault cleared (health 0.46 -> 0.86)
+17,16,11,reconfigure_power:solar_b,-0.350000,0.032640,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+17,17,15,recalibrate_star_tracker,-0.250000,0.115458,0,degraded,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+17,18,14,desaturate_wheels,-0.150000,0.004793,0,degraded,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+17,19,14,desaturate_wheels,-0.150000,0.001565,0,degraded,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+17,20,20,recalibrate_imu,0.000000,0.128978,0,degraded,100.000,0.000,50.000,IMU recalibrated (bias was negligible)
+17,21,6,restore_load:heaters,-0.250000,0.102396,0,degraded,100.000,0.000,50.000,heaters already online
+17,22,3,shed_load:transponder,-0.150000,0.564712,0,degraded,100.000,0.000,50.000,transponder powered off
+17,23,7,restore_load:transponder,1.000000,4.136930,0,nominal,100.000,0.000,50.000,transponder power-cycled; comms fault cleared
+17,24,12,stabilize_attitude,0.000000,0.686849,0,nominal,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+17,25,12,stabilize_attitude,0.000000,0.200588,0,nominal,100.000,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+17,26,12,stabilize_attitude,0.000000,0.059533,0,nominal,100.000,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+17,27,24,query_attitude,0.150000,1.842299,0,nominal,100.000,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+17,28,25,query_thermal,0.150000,1.609232,0,nominal,100.000,0.000,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+17,29,21,query_power_level:battery,0.150000,1.635493,0,nominal,100.000,0.000,44.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+17,30,30,resume_nominal,10.000000,0.548300,1,recovered,100.000,0.000,44.000,nominal operations resumed; mission recovered
+18,1,22,query_power_level:solar_a,0.000000,0.592357,0,degraded,99.790,3.108,50.000,diag: solar_a output=78.7W health=1.00 (panel nominal)
+18,2,23,query_power_level:solar_b,0.000000,0.523537,0,degraded,99.470,3.708,50.000,diag: solar_b output=19.3W health=0.25 (panel DEGRADED)
+18,3,21,query_power_level:battery,0.000000,0.040847,0,degraded,99.040,4.308,50.000,diag: battery_pct=99.5% health=1.00 backup=False pcf=False
+18,4,26,diagnostic_scan:power,0.050000,0.520965,0,degraded,98.490,4.908,50.000,diag-scan power: bat=99.0% solar=88.6W load=105.0W net=negative pcf=False
+18,5,27,diagnostic_scan:attitude,0.050000,0.408421,0,degraded,97.830,5.508,50.000,diag-scan attitude: mode=nominal err=4.91deg rw_deg=0.55 st_fault=True ref=star_tracker
+18,6,28,diagnostic_scan:comms,0.050000,0.412422,0,degraded,97.060,6.108,50.000,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+18,7,25,query_thermal,0.000000,0.036663,0,degraded,96.170,6.708,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+18,8,16,cross_validate_attitude,0.050000,0.559188,0,degraded,95.170,7.308,50.000,diag: ST=10.54deg GY=7.83deg SUN=6.71deg disagree=3.84
+18,9,24,query_attitude,0.000000,0.034505,0,degraded,94.060,7.908,50.000,diag: mode=nominal err=7.31deg rw=degraded ref=star_tracker st_bias=3.8 gyro_bias=1.2
+18,10,0,shed_load:science_a,-0.150000,0.326906,0,degraded,93.670,8.508,50.000,science_a powered off
+18,11,1,shed_load:science_b,-0.150000,0.358829,0,degraded,94.000,9.108,50.000,science_b powered off
+18,12,9,reset_power_controller,-0.250000,0.407405,0,degraded,94.210,9.708,50.000,power controller nominal; reset had no effect
+18,13,10,reconfigure_power:solar_a,-0.350000,0.000647,0,degraded,94.320,10.308,50.000,solar_a has no active fault to reconfigure
+18,14,11,reconfigure_power:solar_b,0.950000,0.955621,0,degraded,94.890,10.908,50.000,solar_b reconfigured successfully; fault cleared (health 0.25 -> 0.65)
+18,15,10,reconfigure_power:solar_a,-0.350000,0.000747,0,degraded,95.310,11.508,50.000,solar_a has no active fault to reconfigure
+18,16,11,reconfigure_power:solar_b,-0.350000,0.147848,0,degraded,95.590,12.108,50.000,solar_b has no active fault to reconfigure
+18,17,15,recalibrate_star_tracker,0.950000,1.564792,0,degraded,95.960,11.008,50.000,star tracker recalibrated; drift fault cleared
+18,18,14,desaturate_wheels,0.450000,0.778070,0,degraded,96.360,10.908,46.000,wheels desaturated; rw_fault cleared (degradation 0.31)
+18,19,14,desaturate_wheels,0.150000,0.036795,0,degraded,96.780,10.808,42.000,wheels desaturated; degradation now 0.00
+18,20,20,recalibrate_imu,0.350000,0.693533,0,degraded,97.230,10.708,42.000,IMU recalibrated; gyro bias 1.50 cleared
+18,21,6,restore_load:heaters,-0.250000,0.350995,0,degraded,97.700,10.608,42.000,heaters already online
+18,22,3,shed_load:transponder,-0.150000,0.486233,0,degraded,98.700,10.508,42.000,transponder powered off
+18,23,7,restore_load:transponder,0.050000,0.011765,0,degraded,99.220,10.408,42.000,transponder restored
+18,24,12,stabilize_attitude,0.250000,0.006803,0,degraded,100.000,7.808,40.000,attitude stabilization burn; pointing error 7.91deg
+18,25,12,stabilize_attitude,0.250000,0.003669,0,degraded,100.000,5.208,38.000,attitude stabilization burn; pointing error 5.31deg
+18,26,12,stabilize_attitude,0.400000,0.790401,0,nominal,100.000,2.608,36.000,attitude stabilization burn; pointing error 2.71deg
+18,27,24,query_attitude,0.150000,1.354332,0,nominal,100.000,2.508,36.000,diag: mode=nominal err=2.61deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+18,28,25,query_thermal,0.150000,1.163820,0,nominal,100.000,2.408,36.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+18,29,21,query_power_level:battery,0.150000,1.197078,0,nominal,100.000,2.308,36.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+18,30,30,resume_nominal,-0.200000,1.099766,0,nominal,100.000,2.208,36.000,"refused: state not stable (err=2.3, bat=100.0%)"
+18,31,30,resume_nominal,-0.200000,0.048024,0,nominal,100.000,2.108,36.000,"refused: state not stable (err=2.2, bat=100.0%)"
+18,32,30,resume_nominal,-0.200000,0.013666,0,nominal,100.000,2.008,36.000,"refused: state not stable (err=2.1, bat=100.0%)"
+18,33,30,resume_nominal,-0.200000,0.003830,0,nominal,100.000,1.908,36.000,"refused: state not stable (err=2.0, bat=100.0%)"
+18,34,13,switch_to_thruster_control,0.100000,7.861963,0,nominal,100.000,1.708,34.500,ACS switched to thruster control
+18,35,0,shed_load:science_a,-0.100000,4.658997,0,nominal,100.000,1.508,33.000,science_a already offline
+18,36,17,switch_attitude_reference:star_tracker,0.100000,6.278715,0,nominal,100.000,1.308,31.500,attitude reference set to star_tracker
+18,37,15,recalibrate_star_tracker,-0.100000,0.536930,0,nominal,100.000,1.108,30.000,star tracker nominal; recalibration unnecessary
+18,38,18,switch_attitude_reference:gyro,0.100000,6.093476,0,nominal,100.000,0.908,28.500,attitude reference set to gyro
+18,39,27,diagnostic_scan:attitude,0.200000,3.110707,0,nominal,100.000,0.708,27.000,diag-scan attitude: mode=thruster err=0.91deg rw_deg=0.00 st_fault=False ref=gyro
+18,40,27,diagnostic_scan:attitude,0.200000,0.559263,0,nominal,100.000,0.508,25.500,diag-scan attitude: mode=thruster err=0.71deg rw_deg=0.00 st_fault=False ref=gyro
+18,41,3,shed_load:transponder,0.000000,0.404550,0,nominal,100.000,0.308,24.000,transponder powered off
+18,42,14,desaturate_wheels,0.000000,1.036590,0,nominal,100.000,0.108,22.500,wheels already nominal; desaturation unnecessary
+18,43,9,reset_power_controller,-0.100000,2.440352,0,nominal,100.000,0.000,21.000,power controller nominal; reset had no effect
+18,44,9,reset_power_controller,-0.100000,0.927251,0,nominal,100.000,0.000,19.500,power controller nominal; reset had no effect
+18,45,16,cross_validate_attitude,0.100000,2.500272,0,nominal,100.000,0.000,18.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+18,46,12,stabilize_attitude,0.000000,0.226410,0,nominal,100.000,0.000,14.500,attitude stabilization burn; pointing error 0.00deg
+18,47,0,shed_load:science_a,-0.100000,2.638331,0,nominal,100.000,0.000,13.000,science_a already offline
+18,48,27,diagnostic_scan:attitude,0.200000,0.679222,0,nominal,100.000,0.000,11.500,diag-scan attitude: mode=thruster err=0.00deg rw_deg=0.00 st_fault=False ref=gyro
+18,49,7,restore_load:transponder,0.200000,0.433211,0,nominal,100.000,0.000,10.000,transponder restored
+18,50,5,restore_load:science_b,-9.800000,92.140911,1,lost,100.000,0.000,8.500,science_b restored
+19,1,22,query_power_level:solar_a,0.000000,0.465217,0,degraded,99.840,0.000,50.000,diag: solar_a output=10.3W health=0.11 (panel DEGRADED)
+19,2,23,query_power_level:solar_b,0.000000,0.438430,0,degraded,99.690,0.000,50.000,diag: solar_b output=90.0W health=1.00 (panel nominal)
+19,3,21,query_power_level:battery,0.000000,0.000332,0,degraded,99.530,0.000,50.000,diag: battery_pct=99.7% health=1.00 backup=False pcf=False
+19,4,26,diagnostic_scan:power,0.050000,0.504692,0,degraded,99.370,0.000,50.000,diag-scan power: bat=99.5% solar=100.3W load=105.0W net=negative pcf=False
+19,5,27,diagnostic_scan:attitude,0.050000,0.050032,0,degraded,99.210,0.000,50.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+19,6,28,diagnostic_scan:comms,0.050000,0.371069,0,degraded,99.060,0.000,50.000,diag-scan comms: transponder=online signal=8.0dB comms_fault=True pending_cycle=False
+19,7,25,query_thermal,0.000000,0.010360,0,degraded,98.900,0.000,50.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+19,8,16,cross_validate_attitude,-0.050000,0.050201,0,degraded,98.740,0.000,50.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+19,9,24,query_attitude,0.000000,0.002646,0,degraded,98.580,0.000,50.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+19,10,0,shed_load:science_a,-0.150000,0.125878,0,degraded,99.260,0.000,50.000,science_a powered off
+19,11,1,shed_load:science_b,-0.150000,0.591423,0,degraded,100.000,0.000,50.000,science_b powered off
+19,12,9,reset_power_controller,-0.250000,0.042291,0,degraded,100.000,0.000,50.000,power controller nominal; reset had no effect
+19,13,10,reconfigure_power:solar_a,0.950000,1.682669,0,degraded,100.000,0.000,50.000,solar_a reconfigured successfully; fault cleared (health 0.11 -> 0.51)
+19,14,11,reconfigure_power:solar_b,-0.350000,0.137079,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+19,15,10,reconfigure_power:solar_a,-0.350000,0.044558,0,degraded,100.000,0.000,50.000,solar_a has no active fault to reconfigure
+19,16,11,reconfigure_power:solar_b,-0.350000,0.048810,0,degraded,100.000,0.000,50.000,solar_b has no active fault to reconfigure
+19,17,15,recalibrate_star_tracker,-0.250000,0.051412,0,degraded,100.000,0.000,50.000,star tracker nominal; recalibration unnecessary
+19,18,14,desaturate_wheels,-0.150000,0.006351,0,degraded,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+19,19,14,desaturate_wheels,-0.150000,0.002180,0,degraded,100.000,0.000,50.000,wheels already nominal; desaturation unnecessary
+19,20,20,recalibrate_imu,0.000000,0.320868,0,degraded,100.000,0.000,50.000,IMU recalibrated (bias was negligible)
+19,21,6,restore_load:heaters,-0.250000,0.395207,0,degraded,100.000,0.000,50.000,heaters already online
+19,22,3,shed_load:transponder,-0.150000,0.953958,0,degraded,100.000,0.000,50.000,transponder powered off
+19,23,7,restore_load:transponder,1.000000,1.206650,0,nominal,100.000,0.000,50.000,transponder power-cycled; comms fault cleared
+19,24,12,stabilize_attitude,0.000000,0.092731,0,nominal,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+19,25,12,stabilize_attitude,0.000000,0.086160,0,nominal,100.000,0.000,46.000,attitude stabilization burn; pointing error 0.00deg
+19,26,12,stabilize_attitude,0.000000,0.026020,0,nominal,100.000,0.000,44.000,attitude stabilization burn; pointing error 0.00deg
+19,27,24,query_attitude,0.150000,0.002370,0,nominal,100.000,0.000,44.000,diag: mode=nominal err=0.00deg rw=nominal ref=star_tracker st_bias=0.0 gyro_bias=0.0
+19,28,25,query_thermal,0.150000,0.000154,0,nominal,100.000,0.000,44.000,diag: battery_temp=20.0C heaters=online thermal_fault=False
+19,29,21,query_power_level:battery,0.150000,0.002221,0,nominal,100.000,0.000,44.000,diag: battery_pct=100.0% health=1.00 backup=False pcf=False
+19,30,30,resume_nominal,10.000000,1.298480,1,recovered,100.000,0.000,44.000,nominal operations resumed; mission recovered
+20,1,12,stabilize_attitude,-0.150000,0.026339,0,degraded,100.000,0.000,48.000,attitude stabilization burn; pointing error 0.00deg
+20,2,2,shed_load:heaters,-0.250000,1.957571,0,degraded,100.000,0.000,48.000,heaters already offline
+20,3,10,reconfigure_power:solar_a,-0.350000,0.010736,0,degraded,100.000,0.000,48.000,solar_a has no active fault to reconfigure
+20,4,26,diagnostic_scan:power,0.050000,0.254304,0,degraded,100.000,0.000,48.000,diag-scan power: bat=100.0% solar=106.2W load=105.0W net=positive pcf=False
+20,5,7,restore_load:transponder,-0.150000,0.000555,0,degraded,100.000,0.000,48.000,comms fault active - power cycle required: shed_load then restore_load
+20,6,27,diagnostic_scan:attitude,0.050000,0.003187,0,degraded,100.000,0.000,48.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+20,7,27,diagnostic_scan:attitude,0.050000,0.041184,0,degraded,100.000,0.000,48.000,diag-scan attitude: mode=nominal err=0.00deg rw_deg=0.00 st_fault=False ref=star_tracker
+20,8,8,switch_to_backup_battery,-0.050000,1.686633,0,degraded,100.000,0.000,48.000,switched to backup battery
+20,9,15,recalibrate_star_tracker,-0.250000,0.029833,0,degraded,100.000,0.000,48.000,star tracker nominal; recalibration unnecessary
+20,10,17,switch_attitude_reference:star_tracker,-0.050000,1.335004,0,degraded,100.000,0.000,48.000,attitude reference set to star_tracker
+20,11,17,switch_attitude_reference:star_tracker,-0.050000,0.435950,0,degraded,100.000,0.000,48.000,attitude reference set to star_tracker
+20,12,13,switch_to_thruster_control,-0.050000,1.300847,0,degraded,99.710,0.000,46.500,ACS switched to thruster control
+20,13,16,cross_validate_attitude,-0.050000,0.122788,0,degraded,99.410,0.000,45.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+20,14,13,switch_to_thruster_control,-0.700000,0.014012,0,critical,99.120,0.000,43.500,already in thruster mode
+20,15,11,reconfigure_power:solar_b,-0.600000,0.087976,0,critical,99.120,0.000,42.000,solar_b reconfigured blindly; marginal improvement (health 0.18 -> 0.28)
+20,16,21,query_power_level:battery,-0.450000,0.000489,0,critical,99.130,0.000,40.500,diag: battery_pct=99.1% health=0.98 backup=True pcf=False
+20,17,30,resume_nominal,-1.000000,0.294975,0,critical,99.140,0.000,39.000,refused: 3 unresolved fault(s) - resolve before resuming nominal
+20,18,2,shed_load:heaters,-0.700000,0.291136,0,critical,99.140,0.000,37.500,heaters already offline
+20,19,3,shed_load:transponder,-0.600000,0.210720,0,critical,99.650,0.000,36.000,transponder powered off
+20,20,16,cross_validate_attitude,-0.500000,0.104482,0,critical,100.000,0.000,34.500,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+20,21,17,switch_attitude_reference:star_tracker,-0.500000,0.565408,0,critical,100.000,0.000,33.000,attitude reference set to star_tracker
+20,22,7,restore_load:transponder,0.400000,0.121703,0,critical,100.000,0.000,31.500,transponder power-cycled; comms fault cleared
+20,23,30,resume_nominal,-1.000000,0.000606,0,critical,100.000,0.000,30.000,refused: 2 unresolved fault(s) - resolve before resuming nominal
+20,24,12,stabilize_attitude,-0.600000,0.067412,0,critical,100.000,0.000,26.500,attitude stabilization burn; pointing error 0.00deg
+20,25,19,switch_attitude_reference:sun_sensor,-0.500000,8.936049,0,critical,100.000,0.000,25.000,attitude reference set to sun_sensor
+20,26,18,switch_attitude_reference:gyro,-0.500000,0.596051,0,critical,100.000,0.000,23.500,attitude reference set to gyro
+20,27,16,cross_validate_attitude,-0.500000,0.003880,0,critical,100.000,0.000,22.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+20,28,2,shed_load:heaters,-0.700000,0.372221,0,critical,100.000,0.000,20.500,heaters already offline
+20,29,10,reconfigure_power:solar_a,-0.800000,0.062891,0,critical,100.000,0.000,19.000,solar_a has no active fault to reconfigure
+20,30,2,shed_load:heaters,-0.700000,0.131421,0,critical,100.000,0.000,17.500,heaters already offline
+20,31,16,cross_validate_attitude,-0.500000,0.001118,0,critical,100.000,0.000,16.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+20,32,20,recalibrate_imu,-0.450000,0.001771,0,critical,100.000,0.000,14.500,IMU recalibrated (bias was negligible)
+20,33,22,query_power_level:solar_a,-0.450000,0.124738,0,critical,100.000,0.000,13.000,diag: solar_a output=90.0W health=1.00 (panel nominal)
+20,34,29,safe_mode,0.000000,4.699387,0,critical,100.000,0.000,11.500,safe mode engaged; non-essentials shed
+20,35,7,restore_load:transponder,-0.400000,0.249712,0,critical,100.000,0.000,10.000,transponder restored
+20,36,16,cross_validate_attitude,-0.500000,0.066781,0,critical,100.000,0.000,8.500,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+20,37,16,cross_validate_attitude,-0.500000,0.003132,0,critical,100.000,0.000,7.000,diag: ST=0.00deg GY=0.00deg SUN=0.00deg disagree=0.00
+20,38,28,diagnostic_scan:comms,-0.400000,0.832476,0,critical,100.000,0.000,5.500,diag-scan comms: transponder=online signal=25.0dB comms_fault=False pending_cycle=False
+20,39,5,restore_load:science_b,-0.400000,7.039317,0,critical,100.000,0.000,4.000,science_b restored
+20,40,18,switch_attitude_reference:gyro,-0.500000,0.085309,0,critical,100.000,0.000,2.500,attitude reference set to gyro
+20,41,11,reconfigure_power:solar_b,-0.600000,0.087504,0,critical,100.000,0.000,1.000,solar_b reconfigured blindly; marginal improvement (health 0.28 -> 0.38)
+20,42,20,recalibrate_imu,-0.450000,0.002395,0,critical,100.000,1.500,0.000,IMU recalibrated (bias was negligible)
+20,43,1,shed_load:science_b,-0.600000,0.130723,0,critical,100.000,3.000,0.000,science_b powered off
+20,44,0,shed_load:science_a,-0.700000,0.312991,0,critical,100.000,4.500,0.000,science_a already offline
+20,45,9,reset_power_controller,-0.700000,0.030560,0,critical,100.000,6.000,0.000,power controller nominal; reset had no effect
+20,46,17,switch_attitude_reference:star_tracker,-0.500000,0.005518,0,critical,100.000,7.500,0.000,attitude reference set to star_tracker
+20,47,9,reset_power_controller,-0.700000,0.008791,0,critical,100.000,9.000,0.000,power controller nominal; reset had no effect
+20,48,3,shed_load:transponder,-0.600000,0.061878,0,critical,100.000,10.500,0.000,transponder powered off
+20,49,21,query_power_level:battery,-0.450000,0.672742,0,critical,100.000,12.000,0.000,diag: battery_pct=100.0% health=0.65 backup=True pcf=False
+20,50,5,restore_load:science_b,-10.400000,81.195142,1,lost,99.490,13.500,0.000,science_b restored

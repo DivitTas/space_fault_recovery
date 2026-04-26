@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <text x="72" y="28" font-size="22" font-weight="700" fill="#17202a">Episode Length</text>
+  <line x1="72" y1="348.00" x2="902" y2="348.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="352.00" text-anchor="end" font-size="12" fill="#526071">38.12</text><line x1="72" y1="288.00" x2="902" y2="288.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="292.00" text-anchor="end" font-size="12" fill="#526071">40.67</text><line x1="72" y1="228.00" x2="902" y2="228.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="232.00" text-anchor="end" font-size="12" fill="#526071">43.22</text><line x1="72" y1="168.00" x2="902" y2="168.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="172.00" text-anchor="end" font-size="12" fill="#526071">45.78</text><line x1="72" y1="108.00" x2="902" y2="108.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="112.00" text-anchor="end" font-size="12" fill="#526071">48.33</text><line x1="72" y1="48.00" x2="902" y2="48.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="52.00" text-anchor="end" font-size="12" fill="#526071">50.88</text>
+  <line x1="72" y1="48" x2="72" y2="348" stroke="#2f3a45" stroke-width="1.4" />
+  <line x1="72" y1="348" x2="902" y2="348" stroke="#2f3a45" stroke-width="1.4" />
+  <text x="487.0" y="392" text-anchor="middle" font-size="14" fill="#344052">Episode</text>
+  <text x="18" y="198.0" text-anchor="middle" font-size="14" fill="#344052" transform="rotate(-90 18 198.0)">Steps</text>
+  <text x="72" y="370" text-anchor="middle" font-size="12" fill="#526071">1</text>
+  <text x="902" y="370" text-anchor="middle" font-size="12" fill="#526071">5</text>
+  <polyline points="129.24,68.69 308.12,68.69 487.00,68.69 665.88,68.69 844.76,327.31" fill="none" stroke="#c67a00" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <line x1="738" y1="68" x2="774" y2="68" stroke="#c67a00" stroke-width="3" /><text x="782" y="72" font-size="13" fill="#263241">steps</text>
+</svg>

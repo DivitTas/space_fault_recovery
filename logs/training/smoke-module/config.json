@@ -1,0 +1,242 @@
+{
+  "episodes": 3,
+  "max_steps": 50,
+  "seed": 11,
+  "learning_rate": 0.03,
+  "gamma": 0.95,
+  "gradient_clip": 5.0,
+  "epsilon_start": 1.0,
+  "epsilon_end": 0.05,
+  "epsilon_decay_episodes": 180,
+  "eval_every": 0,
+  "eval_episodes": 20,
+  "n_features": 37,
+  "n_actions": 31,
+  "feature_names": [
+    "bias",
+    "battery_pct",
+    "battery_drain_rate",
+    "solar_a_output",
+    "solar_b_output",
+    "bus_voltage",
+    "star_tracker_error",
+    "gyro_error",
+    "sun_sensor_error",
+    "fuel_units",
+    "signal_strength",
+    "battery_temp",
+    "episode_progress",
+    "science_a_online",
+    "science_b_online",
+    "heaters_online",
+    "transponder_online",
+    "last_action_error",
+    "last_action_refused",
+    "last_action_diag",
+    "attitude_mode_nominal",
+    "attitude_mode_thruster",
+    "attitude_mode_tumbling",
+    "rw_status_nominal",
+    "rw_status_degraded",
+    "rw_status_failed",
+    "transponder_status_nominal",
+    "transponder_status_degraded",
+    "transponder_status_offline",
+    "link_bandwidth_high",
+    "link_bandwidth_low",
+    "link_bandwidth_none",
+    "mission_status_nominal",
+    "mission_status_degraded",
+    "mission_status_critical",
+    "mission_status_recovered",
+    "mission_status_lost"
+  ],
+  "action_space": [
+    {
+      "index": 0,
+      "command": "shed_load",
+      "target": "science_a",
+      "label": "shed_load:science_a"
+    },
+    {
+      "index": 1,
+      "command": "shed_load",
+      "target": "science_b",
+      "label": "shed_load:science_b"
+    },
+    {
+      "index": 2,
+      "command": "shed_load",
+      "target": "heaters",
+      "label": "shed_load:heaters"
+    },
+    {
+      "index": 3,
+      "command": "shed_load",
+      "target": "transponder",
+      "label": "shed_load:transponder"
+    },
+    {
+      "index": 4,
+      "command": "restore_load",
+      "target": "science_a",
+      "label": "restore_load:science_a"
+    },
+    {
+      "index": 5,
+      "command": "restore_load",
+      "target": "science_b",
+      "label": "restore_load:science_b"
+    },
+    {
+      "index": 6,
+      "command": "restore_load",
+      "target": "heaters",
+      "label": "restore_load:heaters"
+    },
+    {
+      "index": 7,
+      "command": "restore_load",
+      "target": "transponder",
+      "label": "restore_load:transponder"
+    },
+    {
+      "index": 8,
+      "command": "switch_to_backup_battery",
+      "target": null,
+      "label": "switch_to_backup_battery"
+    },
+    {
+      "index": 9,
+      "command": "reset_power_controller",
+      "target": null,
+      "label": "reset_power_controller"
+    },
+    {
+      "index": 10,
+      "command": "reconfigure_power",
+      "target": "solar_a",
+      "label": "reconfigure_power:solar_a"
+    },
+    {
+      "index": 11,
+      "command": "reconfigure_power",
+      "target": "solar_b",
+      "label": "reconfigure_power:solar_b"
+    },
+    {
+      "index": 12,
+      "command": "stabilize_attitude",
+      "target": null,
+      "label": "stabilize_attitude"
+    },
+    {
+      "index": 13,
+      "command": "switch_to_thruster_control",
+      "target": null,
+      "label": "switch_to_thruster_control"
+    },
+    {
+      "index": 14,
+      "command": "desaturate_wheels",
+      "target": null,
+      "label": "desaturate_wheels"
+    },
+    {
+      "index": 15,
+      "command": "recalibrate_star_tracker",
+      "target": null,
+      "label": "recalibrate_star_tracker"
+    },
+    {
+      "index": 16,
+      "command": "cross_validate_attitude",
+      "target": null,
+      "label": "cross_validate_attitude"
+    },
+    {
+      "index": 17,
+      "command": "switch_attitude_reference",
+      "target": "star_tracker",
+      "label": "switch_attitude_reference:star_tracker"
+    },
+    {
+      "index": 18,
+      "command": "switch_attitude_reference",
+      "target": "gyro",
+      "label": "switch_attitude_reference:gyro"
+    },
+    {
+      "index": 19,
+      "command": "switch_attitude_reference",
+      "target": "sun_sensor",
+      "label": "switch_attitude_reference:sun_sensor"
+    },
+    {
+      "index": 20,
+      "command": "recalibrate_imu",
+      "target": null,
+      "label": "recalibrate_imu"
+    },
+    {
+      "index": 21,
+      "command": "query_power_level",
+      "target": "battery",
+      "label": "query_power_level:battery"
+    },
+    {
+      "index": 22,
+      "command": "query_power_level",
+      "target": "solar_a",
+      "label": "query_power_level:solar_a"
+    },
+    {
+      "index": 23,
+      "command": "query_power_level",
+      "target": "solar_b",
+      "label": "query_power_level:solar_b"
+    },
+    {
+      "index": 24,
+      "command": "query_attitude",
+      "target": null,
+      "label": "query_attitude"
+    },
+    {
+      "index": 25,
+      "command": "query_thermal",
+      "target": null,
+      "label": "query_thermal"
+    },
+    {
+      "index": 26,
+      "command": "diagnostic_scan",
+      "target": "power",
+      "label": "diagnostic_scan:power"
+    },
+    {
+      "index": 27,
+      "command": "diagnostic_scan",
+      "target": "attitude",
+      "label": "diagnostic_scan:attitude"
+    },
+    {
+      "index": 28,
+      "command": "diagnostic_scan",
+      "target": "comms",
+      "label": "diagnostic_scan:comms"
+    },
+    {
+      "index": 29,
+      "command": "safe_mode",
+      "target": null,
+      "label": "safe_mode"
+    },
+    {
+      "index": 30,
+      "command": "resume_nominal",
+      "target": null,
+      "label": "resume_nominal"
+    }
+  ]
+}

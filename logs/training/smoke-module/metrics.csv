@@ -1,0 +1,4 @@
+episode,seed,epsilon,total_reward,mean_loss,max_loss,steps,done,recovered,lost,final_status,final_battery_pct,final_attitude_error,final_fuel_units,invalid_action_count,diagnostic_action_count,rolling_reward_20,rolling_loss_20,rolling_success_rate_20,eval_mean_reward,eval_success_rate
+1,11,1.000000,-4.750000,0.049843,0.675861,50,1,0,0,degraded,100.000,2.794,10.500,0,18,-4.750000,0.049843,0.000000,,
+2,12,0.994722,-26.300000,0.352856,14.176219,50,1,0,1,lost,94.930,27.000,0.000,0,12,-15.525000,0.201350,0.000000,,
+3,13,0.989444,-21.950000,0.373121,15.211286,50,1,0,1,lost,100.000,0.000,46.000,1,20,-17.666667,0.258607,0.000000,,

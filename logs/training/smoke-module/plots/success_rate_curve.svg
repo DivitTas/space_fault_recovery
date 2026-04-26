@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <text x="72" y="28" font-size="22" font-weight="700" fill="#17202a">Recovery Success Rate</text>
+  <line x1="72" y1="348.00" x2="902" y2="348.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="352.00" text-anchor="end" font-size="12" fill="#526071">-1.00</text><line x1="72" y1="288.00" x2="902" y2="288.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="292.00" text-anchor="end" font-size="12" fill="#526071">-0.60</text><line x1="72" y1="228.00" x2="902" y2="228.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="232.00" text-anchor="end" font-size="12" fill="#526071">-0.20</text><line x1="72" y1="168.00" x2="902" y2="168.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="172.00" text-anchor="end" font-size="12" fill="#526071">0.20</text><line x1="72" y1="108.00" x2="902" y2="108.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="112.00" text-anchor="end" font-size="12" fill="#526071">0.60</text><line x1="72" y1="48.00" x2="902" y2="48.00" stroke="#e7eaf0" stroke-width="1" /><text x="60" y="52.00" text-anchor="end" font-size="12" fill="#526071">1.00</text>
+  <line x1="72" y1="48" x2="72" y2="348" stroke="#2f3a45" stroke-width="1.4" />
+  <line x1="72" y1="348" x2="902" y2="348" stroke="#2f3a45" stroke-width="1.4" />
+  <text x="487.0" y="392" text-anchor="middle" font-size="14" fill="#344052">Episode</text>
+  <text x="18" y="198.0" text-anchor="middle" font-size="14" fill="#344052" transform="rotate(-90 18 198.0)">Rolling success rate</text>
+  <text x="72" y="370" text-anchor="middle" font-size="12" fill="#526071">1</text>
+  <text x="902" y="370" text-anchor="middle" font-size="12" fill="#526071">3</text>
+  <polyline points="129.24,198.00 487.00,198.00 844.76,198.00" fill="none" stroke="#1f8a99" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+  <line x1="738" y1="68" x2="774" y2="68" stroke="#1f8a99" stroke-width="3" /><text x="782" y="72" font-size="13" fill="#263241">20 episode rate</text>
+</svg>
