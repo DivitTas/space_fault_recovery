@@ -1,5 +1,6 @@
 spec_version: 1
 name: space_fault_recovery
+repo_id: DivitTas/Space-Fault-Recovery
 description: >
   Partially-observable spacecraft fault-cascade environment for training
   LLM agents to recover a degraded satellite from 1-3 injected faults
