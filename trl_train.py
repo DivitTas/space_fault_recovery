@@ -117,7 +117,7 @@ def _extract_text(value: Any) -> str:
 
 # ── prompt construction ──────────────────────────────────────────────────────
 
-def obs_to_prompt(obs: Any, *, seed: int) -> str:
+def _build_user_prompt(obs: Any, *, seed: int) -> str:
     return (
         "You are a spacecraft fault-recovery controller.\n"
         "Choose exactly one valid action for the CURRENT telemetry.\n"
@@ -144,6 +144,24 @@ def obs_to_prompt(obs: Any, *, seed: int) -> str:
         f"Valid actions: {', '.join(_ACTION_LABELS)}\n"
         "Respond with exactly one action label and no explanation."
     )
+
+
+def obs_to_prompt(obs: Any, *, seed: int) -> str:
+    user_prompt = _build_user_prompt(obs, seed=seed)
+    if _TOKENIZER is None:
+        return user_prompt
+
+    # Instruct models like Qwen2.5 rely on chat scaffolding to learn when to
+    # emit end-of-turn tokens (<|im_end|>). Raw text prompts often never
+    # terminate, leading to clipped completions and weak/unstable gradients.
+    try:
+        return _TOKENIZER.apply_chat_template(
+            [{"role": "user", "content": user_prompt}],
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+    except Exception:
+        return user_prompt
 
 
 # ── dataset construction ─────────────────────────────────────────────────────
@@ -236,7 +254,7 @@ def parse_action(text: str) -> ActionSpec:
     return _ACTION_LOOKUP[FALLBACK_ACTION]
 
 
-def _action_from_model(prompt: str) -> ActionSpec:
+def _action_from_model(prompt: str, *, do_sample: bool = False) -> ActionSpec:
     if _MODEL is None or _TOKENIZER is None:
         return _ACTION_LOOKUP[FALLBACK_ACTION]
 
@@ -245,14 +263,27 @@ def _action_from_model(prompt: str) -> ActionSpec:
     try:
         encoded = _TOKENIZER(prompt, return_tensors="pt")
         encoded = {k: v.to(_MODEL.device) for k, v in encoded.items()}
+        eos_token_id = None
+        if hasattr(_MODEL, "generation_config"):
+            eos_token_id = _MODEL.generation_config.eos_token_id
+        generation_kwargs: dict[str, Any] = {
+            "max_new_tokens": 64,
+            "do_sample": do_sample,
+            "pad_token_id": _TOKENIZER.pad_token_id or _TOKENIZER.eos_token_id,
+        }
+        if eos_token_id is not None:
+            generation_kwargs["eos_token_id"] = eos_token_id
+        if do_sample:
+            generation_kwargs.update(
+                {
+                    "temperature": 0.8,
+                    "top_p": 0.9,
+                }
+            )
         with torch.no_grad():
             generated = _MODEL.generate(
                 **encoded,
-                max_new_tokens=64,
-                do_sample=True,
-                temperature=0.8,
-                top_p=0.9,
-                pad_token_id=_TOKENIZER.eos_token_id,
+                **generation_kwargs,
             )
         new_tokens = generated[0][encoded["input_ids"].shape[-1]:]
         text = _TOKENIZER.decode(new_tokens, skip_special_tokens=True)
@@ -383,7 +414,7 @@ def evaluate_policy(
             and int(getattr(obs, "step", 0)) < MAX_STEPS
         ):
             prompt = obs_to_prompt(obs, seed=seed)
-            action = _action_from_model(prompt)
+            action = _action_from_model(prompt, do_sample=False)
             obs = env.step(action.to_action())
             total_reward += float(obs.reward or 0.0)
 
@@ -460,7 +491,7 @@ def parse_args() -> argparse.Namespace:
     # GRPO hyperparameters
     parser.add_argument("--num-generations", type=int, default=4)
     parser.add_argument("--max-completion-length", type=int, default=128)
-    parser.add_argument("--per-device-train-batch-size", type=int, default=2)
+    parser.add_argument("--per-device-train-batch-size", type=int, default=4)
     parser.add_argument("--learning-rate", type=float, default=5e-6)
     parser.add_argument("--logging-steps", type=int, default=1)
     parser.add_argument("--max-steps", type=int, default=500)

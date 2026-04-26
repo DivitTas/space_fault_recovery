@@ -41,6 +41,9 @@ python trl_train.py \
   --use-lora \
   --max-steps 500 \
   --num-prompts 256 \
+  --num-generations 8 \
+  --per-device-train-batch-size 8 \
+  --learning-rate 2e-6 \
   --eval-episodes 20 \
   --report-to wandb \
   --wandb-project space-fault-trl \
@@ -49,6 +52,7 @@ python trl_train.py \
 
 Expected wall time: ~35–45 min on A10G (~$1.50 in HF credits).  
 Use `--load-in-4bit` for T4 runs to fit within 16 GB VRAM.
+If VRAM is tight, use `--num-generations 4 --per-device-train-batch-size 4`.
 
 ### Colab notebook
 
