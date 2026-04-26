@@ -21,6 +21,10 @@ pip install -r training/requirements-train.txt
 
 ### Quick smoke run (CPU, ~1 min, no GPU needed)
 
+> **Note:** `training/requirements-train.txt` includes `bitsandbytes`, which may
+> fail to install on CPU-only or non-Linux machines. If you hit install errors,
+> skip it with `pip install $(grep -v bitsandbytes training/requirements-train.txt | grep -v '^#')`.
+
 ```bash
 python trl_train.py \
   --max-steps 2 \
