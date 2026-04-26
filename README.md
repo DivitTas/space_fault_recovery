@@ -1,6 +1,6 @@
 ---
 title: Space Fault Recovery Environment Server
-emoji: 🎪
+emoji: 🛰️
 colorFrom: pink
 colorTo: purple
 sdk: docker
@@ -9,247 +9,181 @@ app_port: 8000
 base_path: /web
 tags:
   - openenv
+  - reinforcement-learning
+  - llm-agents
+  - partial-observability
+  - spacecraft
+  - fault-recovery
+  - cascade-failure
 ---
+
+> **Live demo:** [huggingface.co/spaces/DivitTas/Space-Fault-Recovery](https://huggingface.co/spaces/DivitTas/Space-Fault-Recovery)
 
 # Space Fault Recovery Environment
 
-A simple test environment that echoes back messages. Perfect for testing the env APIs as well as demonstrating environment usage patterns.
+A spacecraft fault-cascade simulation built on the [OpenEnv](https://github.com/meta-pytorch/OpenEnv) framework. An RL agent (LLM) takes the role of an onboard flight controller and must recover a degraded spacecraft over up to 50 decision steps before the mission is lost.
+
+Each episode resets with 1–3 injected faults sampled from a fault library (solar-panel degradation, battery drain, reaction-wheel faults, attitude drift, thermal faults, comms degradation). The agent only sees sensor telemetry — true subsystem health is hidden and must be inferred from readings or revealed via diagnostic commands.
 
 ## Quick Start
 
-The simplest way to use the Space Fault Recovery environment is through the `SpaceFaultRecoveryEnv` class:
-
 ```python
-from space_fault_recovery import SpaceFaultRecoveryAction, SpaceFaultRecoveryEnv
+from space_fault_recovery import SpaceFaultAction, SpaceFaultRecoveryEnv
 
 try:
-    # Create environment from Docker image
-    space_fault_recoveryenv = SpaceFaultRecoveryEnv.from_docker_image("space_fault_recovery-env:latest")
+    env = SpaceFaultRecoveryEnv.from_docker_image("space_fault_recovery-env:latest")
 
-    # Reset
-    result = space_fault_recoveryenv.reset()
-    print(f"Reset: {result.observation.echoed_message}")
+    obs = env.reset().observation
+    print(f"Mission: {obs.mission_status}, battery: {obs.battery_pct:.1f}%")
 
-    # Send multiple messages
-    messages = ["Hello, World!", "Testing echo", "Final message"]
+    # Run a diagnostic, then act
+    result = env.step(SpaceFaultAction(command="diagnostic_scan", target="power"))
+    print(f"Diagnostic: {result.observation.last_action_result}")
 
-    for msg in messages:
-        result = space_fault_recoveryenv.step(SpaceFaultRecoveryAction(message=msg))
-        print(f"Sent: '{msg}'")
-        print(f"  → Echoed: '{result.observation.echoed_message}'")
-        print(f"  → Length: {result.observation.message_length}")
-        print(f"  → Reward: {result.reward}")
+    result = env.step(SpaceFaultAction(command="shed_load", target="science_a"))
+    print(f"Reward: {result.reward}, status: {result.observation.mission_status}")
 
 finally:
-    # Always clean up
-    space_fault_recoveryenv.close()
+    env.close()
 ```
 
-That's it! The `SpaceFaultRecoveryEnv.from_docker_image()` method handles:
-- Starting the Docker container
-- Waiting for the server to be ready
-- Connecting to the environment
-- Container cleanup when you call `close()`
+`SpaceFaultRecoveryEnv.from_docker_image()` starts the container, waits for the server to be ready, connects, and tears the container down on `close()`.
 
 ## Building the Docker Image
 
-Before using the environment, you need to build the Docker image:
-
 ```bash
-# From project root
 docker build -t space_fault_recovery-env:latest -f server/Dockerfile .
 ```
 
 ## Deploying to Hugging Face Spaces
 
-You can easily deploy your OpenEnv environment to Hugging Face Spaces using the `openenv push` command:
-
 ```bash
-# From the environment directory (where openenv.yaml is located)
+# From the environment directory (where openenv.yaml lives)
 openenv push
 
-# Or specify options
+# Or with options
 openenv push --namespace my-org --private
 ```
 
-The `openenv push` command will:
-1. Validate that the directory is an OpenEnv environment (checks for `openenv.yaml`)
-2. Prepare a custom build for Hugging Face Docker space (enables web interface)
-3. Upload to Hugging Face (ensuring you're logged in)
-
-### Prerequisites
-
-- Authenticate with Hugging Face: The command will prompt for login if not already authenticated
+`openenv push` validates the directory, prepares a Hugging Face Docker space build (with the web UI enabled), and uploads it.
 
 ### Options
 
-- `--directory`, `-d`: Directory containing the OpenEnv environment (defaults to current directory)
-- `--repo-id`, `-r`: Repository ID in format 'username/repo-name' (defaults to 'username/env-name' from openenv.yaml)
-- `--base-image`, `-b`: Base Docker image to use (overrides Dockerfile FROM)
-- `--private`: Deploy the space as private (default: public)
+- `--directory`, `-d`: Directory containing the OpenEnv environment (default: cwd)
+- `--repo-id`, `-r`: Repo in `username/repo-name` form (default from `openenv.yaml`)
+- `--base-image`, `-b`: Base Docker image (overrides Dockerfile `FROM`)
+- `--private`: Deploy as a private space
 
-### Examples
-
-```bash
-# Push to your personal namespace (defaults to username/env-name from openenv.yaml)
-openenv push
-
-# Push to a specific repository
-openenv push --repo-id my-org/my-env
-
-# Push with a custom base image
-openenv push --base-image ghcr.io/meta-pytorch/openenv-base:latest
-
-# Push as a private space
-openenv push --private
-
-# Combine options
-openenv push --repo-id my-org/my-env --base-image custom-base:latest --private
-```
-
-After deployment, your space will be available at:
-`https://huggingface.co/spaces/<repo-id>`
-
-The deployed space includes:
-- **Web Interface** at `/web` - Interactive UI for exploring the environment
-- **API Documentation** at `/docs` - Full OpenAPI/Swagger interface
-- **Health Check** at `/health` - Container health monitoring
-- **WebSocket** at `/ws` - Persistent session endpoint for low-latency interactions
+The deployed space exposes `/web` (interactive UI), `/docs` (OpenAPI), `/health`, and `/ws` (WebSocket session endpoint).
 
 ## Environment Details
 
-### Action
-**SpaceFaultRecoveryAction**: Contains a single field
-- `message` (str) - The message to echo back
+### Action — `SpaceFaultAction`
 
-### Observation
-**SpaceFaultRecoveryObservation**: Contains the echo response and metadata
-- `echoed_message` (str) - The message echoed back
-- `message_length` (int) - Length of the message
-- `reward` (float) - Reward based on message length (length × 0.1)
-- `done` (bool) - Always False for echo environment
-- `metadata` (dict) - Additional info like step count
+- `command` (str) — verb from `VALID_COMMANDS` in `models.py`
+- `target` (str, optional) — required only for targeted commands (e.g. `shed_load → "science_a"`)
 
-### Reward
-The reward is calculated as: `message_length × 0.1`
-- "Hi" → reward: 0.2
-- "Hello, World!" → reward: 1.3
-- Empty message → reward: 0.0
+Command groups:
+
+| Group | Commands |
+| --- | --- |
+| Power | `shed_load`, `restore_load`, `switch_to_backup_battery`, `reset_power_controller`, `reconfigure_power` |
+| Attitude | `stabilize_attitude`, `switch_to_thruster_control`, `desaturate_wheels`, `recalibrate_star_tracker` |
+| Sensor validation | `cross_validate_attitude`, `switch_attitude_reference`, `recalibrate_imu` |
+| Diagnostics | `query_power_level`, `query_attitude`, `query_thermal`, `diagnostic_scan` |
+| General | `safe_mode`, `resume_nominal` |
+
+See `models.py` for the full `TARGETED_COMMANDS` mapping.
+
+### Observation — `SpaceFaultObservation`
+
+Sensor-level telemetry only. Key fields:
+
+- **Power:** `battery_pct`, `battery_drain_rate`, `solar_a_sensor_output_w`, `solar_b_sensor_output_w`, `bus_voltage`
+- **Attitude:** `star_tracker_deg`, `gyro_deg`, `sun_sensor_deg`, `attitude_mode`, `rw_status`, `fuel_units`
+- **Comms:** `signal_strength_db`, `transponder_status`, `link_bandwidth`
+- **Thermal:** `battery_temp_c`, `heater_status`
+- **Mission meta:** `subsystems_online`, `step`, `mission_status`, `last_action_result`
+
+True subsystem health (e.g. `solar_a_health`) is *not* exposed — the agent must run diagnostics or infer it from sensor readings. Diagnostic command results land in `last_action_result`.
+
+### Mission Outcomes
+
+`mission_status` transitions through `nominal → degraded → critical`, ending in either `recovered` or `lost`. Episodes are truncated at 50 steps; timeout always sets `lost` with a −10 penalty.
 
 ## Advanced Usage
 
-### Connecting to an Existing Server
-
-If you already have a Space Fault Recovery environment server running, you can connect directly:
+### Connecting to an existing server
 
 ```python
-from space_fault_recovery import SpaceFaultRecoveryEnv
+from space_fault_recovery import SpaceFaultAction, SpaceFaultRecoveryEnv
 
-# Connect to existing server
-space_fault_recoveryenv = SpaceFaultRecoveryEnv(base_url="<ENV_HTTP_URL_HERE>")
-
-# Use as normal
-result = space_fault_recoveryenv.reset()
-result = space_fault_recoveryenv.step(SpaceFaultRecoveryAction(message="Hello!"))
+env = SpaceFaultRecoveryEnv(base_url="http://localhost:8000")
+result = env.reset()
+result = env.step(SpaceFaultAction(command="safe_mode"))
 ```
 
-Note: When connecting to an existing server, `space_fault_recoveryenv.close()` will NOT stop the server.
+When connecting to an existing server, `env.close()` will not stop the server.
 
-### Using the Context Manager
-
-The client supports context manager usage for automatic connection management:
+### Context manager (WebSocket session)
 
 ```python
-from space_fault_recovery import SpaceFaultRecoveryAction, SpaceFaultRecoveryEnv
-
-# Connect with context manager (auto-connects and closes)
 with SpaceFaultRecoveryEnv(base_url="http://localhost:8000") as env:
-    result = env.reset()
-    print(f"Reset: {result.observation.echoed_message}")
-    # Multiple steps with low latency
-    for msg in ["Hello", "World", "!"]:
-        result = env.step(SpaceFaultRecoveryAction(message=msg))
-        print(f"Echoed: {result.observation.echoed_message}")
+    env.reset()
+    for cmd in ["diagnostic_scan", "shed_load", "stabilize_attitude"]:
+        target = "power" if cmd == "diagnostic_scan" else ("science_a" if cmd == "shed_load" else None)
+        result = env.step(SpaceFaultAction(command=cmd, target=target))
+        print(result.observation.mission_status, result.reward)
 ```
 
-The client uses WebSocket connections for:
-- **Lower latency**: No HTTP connection overhead per request
-- **Persistent session**: Server maintains your environment state
-- **Efficient for episodes**: Better for many sequential steps
+The client uses WebSockets for lower latency and persistent session state across an episode.
 
-### Concurrent WebSocket Sessions
+### Concurrent sessions
 
-The server supports multiple concurrent WebSocket connections. To enable this,
-modify `server/app.py` to use factory mode:
+To allow multiple concurrent WebSocket clients, edit `server/app.py` to pass the environment **class** (not instance) and set `max_concurrent_envs`:
 
 ```python
-# In server/app.py - use factory mode for concurrent sessions
 app = create_app(
-    SpaceFaultRecoveryEnvironment,  # Pass class, not instance
-    SpaceFaultRecoveryAction,
-    SpaceFaultRecoveryObservation,
-    max_concurrent_envs=4,  # Allow 4 concurrent sessions
+    SpaceFaultRecoveryEnvironment,
+    SpaceFaultAction,
+    SpaceFaultObservation,
+    max_concurrent_envs=4,
 )
-```
-
-Then multiple clients can connect simultaneously:
-
-```python
-from space_fault_recovery import SpaceFaultRecoveryAction, SpaceFaultRecoveryEnv
-from concurrent.futures import ThreadPoolExecutor
-
-def run_episode(client_id: int):
-    with SpaceFaultRecoveryEnv(base_url="http://localhost:8000") as env:
-        result = env.reset()
-        for i in range(10):
-            result = env.step(SpaceFaultRecoveryAction(message=f"Client {client_id}, step {i}"))
-        return client_id, result.observation.message_length
-
-# Run 4 episodes concurrently
-with ThreadPoolExecutor(max_workers=4) as executor:
-    results = list(executor.map(run_episode, range(4)))
 ```
 
 ## Development & Testing
 
-### Direct Environment Testing
-
-Test the environment logic directly without starting the HTTP server:
-
 ```bash
-# From the server directory
+# Install deps (uv.lock is committed — use uv sync, not pip)
+uv sync
+
+# Test environment logic directly, no server
 python3 server/space_fault_recovery_environment.py
-```
 
-This verifies that:
-- Environment resets correctly
-- Step executes actions properly
-- State tracking works
-- Rewards are calculated correctly
-
-### Running Locally
-
-Run the server locally for development:
-
-```bash
+# Run server locally with reload
 uvicorn server.app:app --reload
+
+# Smoke test
+curl -X POST localhost:8000/reset
+curl -X POST localhost:8000/step -H "Content-Type: application/json" \
+  -d '{"command": "shed_load", "target": "science_a"}'
 ```
 
 ## Project Structure
 
 ```
 space_fault_recovery/
-├── .dockerignore         # Docker build exclusions
-├── __init__.py            # Module exports
-├── README.md              # This file
-├── openenv.yaml           # OpenEnv manifest
-├── pyproject.toml         # Project metadata and dependencies
-├── uv.lock                # Locked dependencies (generated)
-├── client.py              # SpaceFaultRecoveryEnv client
-├── models.py              # Action and Observation models
+├── __init__.py                              # Module exports
+├── README.md                                # This file
+├── CLAUDE.md                                # Repo guidance for Claude Code
+├── openenv.yaml                             # OpenEnv manifest
+├── pyproject.toml                           # Project metadata and dependencies
+├── uv.lock                                  # Locked dependencies
+├── client.py                                # SpaceFaultRecoveryEnv WebSocket client
+├── models.py                                # SpaceFaultAction / SpaceFaultObservation
 └── server/
-    ├── __init__.py        # Server module exports
-    ├── space_fault_recovery_environment.py  # Core environment logic
-    ├── app.py             # FastAPI application (HTTP + WebSocket endpoints)
-    └── Dockerfile         # Container image definition
+    ├── __init__.py
+    ├── space_fault_recovery_environment.py  # Cascade simulation logic
+    ├── app.py                               # FastAPI app (HTTP + WebSocket)
+    └── Dockerfile
 ```
